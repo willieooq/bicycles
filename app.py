@@ -10,21 +10,33 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-import boto3
-from boto3.dynamodb.conditions import Key, Attr
-from botocore.exceptions import ClientError
+##import boto3
+##from boto3.dynamodb.conditions import Key, Attr
+##from botocore.exceptions import ClientError
 import psycopg2
 import datetime
 import os
 
 app = Flask(__name__)
+#DB
+#client = boto3.client('dynamodb')
 
+#mydb = boto3.resource('dynamodb')
+#table = mydb.Table('BrokenBicycles')
+#DATABASE_URL = os.environ['postgres://ftceeoocdgijth:3879aea8a8edee697503af8aaa1f0683bbb65f3170777801dc8467cc17163ca3@ec2-23-21-148-223.compute-1.amazonaws.com:5432/dcuva73eomjp71']
+
+#conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 # Channel Access Token
 line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
 handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
 to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
+#變數
+#levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
 
-# 監聽所有來自 /callback 的 Post Request
+#Name="變更稱呼"
+#Num='變更電話'
+#選單
+#大廳
 title_btn =ButtonsTemplate(
                             thumbnail_image_url="https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/60502088_868260083527412_4497744968470757376_n.png?_nc_cat=103&_nc_ht=scontent.ftpe12-1.fna&oh=33c77713dcab51e5e26f307cf3eae86e&oe=5D54CF9A",
                             title='您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務', 
@@ -127,6 +139,34 @@ def handle_message(event):
     UserMsg=event.message.text
     Token=event.reply_token
     user_id = event.source.user_id
+    #DB
+##    table.put_item(
+##        Item={
+##            'UserID':user_id,
+##            'Name':"未填",
+##            'Num':"未填"
+##        )
+##'''    table.put_item(
+##    Item={
+##            'UserID':user_id,
+##            'Time':'Time',
+####            'Address':'local',
+####            'Photo':'None',
+####            'City':,
+####            'Detail':,
+####            'Handler':'未指派',
+####            'Lat':,'34324'
+####            'Long':'3534', 
+##            'Name':"未填",
+##            'Num':"未填"
+####            'Score':0,
+####            'Status':'已舉報',
+####            'updatedate':'00' 
+##        }
+##    )
+##    resp = table.get_item(Key={'UserID':user_id})
+##    item = resp['Item']'
+    #測試用
     if UserMsg == '點我回到大廳':
         line_bot_api.reply_message(Token,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
@@ -156,3 +196,5 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+
