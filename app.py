@@ -11,7 +11,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage
 )
 import os
-from db import *
+from dbmodel import *
 import json
 import psycopg2
 app = Flask(__name__)

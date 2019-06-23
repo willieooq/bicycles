@@ -21,18 +21,22 @@ class usermessage(db.Model):
     user_id = db.Column(db.String(50))
     message = db.Column(db.Text)
     birth_date = db.Column(db.TIMESTAMP)
+    address = db.Column(db.Text)
 
-    def __init__(self
-                 , id
-                 , user_id
-                 , message
-                 , birth_date
+    def __init__(self,
+                 id,
+                 user_id,
+                 message,
+                 birth_date,
+                 address
                  ):
         self.id = id
         self.user_id = user_id
         self.message = message
         self.birth_date = birth_date
+        self.address = address
 
 
 if __name__ == '__main__':
     manager.run()
+
