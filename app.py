@@ -142,8 +142,8 @@ def handle_message(event):
     elif (UserMsg == "變更稱呼"):
         
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
+        Name=UserMsg
         if Name=="變更稱呼" or Num== "變更電話":
-            Name=UserMsg
             line_bot_api.push_message(to, TextSendMessage(text="1"))
             line_bot_api.reply_message(Token, TextSendMessage(text=Name))
         else :
