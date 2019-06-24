@@ -140,12 +140,11 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
     elif (UserMsg == "變更稱呼"):
- #       if Name=="變更稱呼" or Num== "變更電話":
-        Name=UserMsg
-        line_bot_api.reply_message(Token, TextSendMessage(text=Name))
         
-        if Name !="變更稱呼":
-            line_bot_api.push_message(to, TextSendMessage(text=Name))
+        line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
+        Name=UserMsg
+        if Name=="變更稱呼" or Num== "變更電話":
+            line_bot_api.reply_message(Token, TextSendMessage(text=Name))
   #      line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token, [ImageSendMessage(original_content_url=
