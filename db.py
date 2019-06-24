@@ -11,12 +11,15 @@ con = psycopg2.connect(
 
 #cursor
 cur = con.cursor()
-
+#x= input('please input x')
 #cur.execute("insert into weather (city,date) values ('tapei','2014-11-29' )",)
 #cur.execute("insert into bicycles (userid) values (UserId )")
-#cur.execute("insert into bicycles (userid) values ('0' )")
-cur.execute("select city, date from weather")
 
+def insert(a):
+    cur.execute("insert into bicycles (userid) values (%s)",(str(a)))
+    print('Success')
+#cur.execute("select city, date from weather")
+#insert(x)
 #rows = cur.fetchall()
 
 #commit the transcation

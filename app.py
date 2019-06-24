@@ -10,7 +10,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-
+from db import *
 import psycopg2
 import datetime
 import os
@@ -148,8 +148,9 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        cur.execute("insert into bicycles (userid) values ('2' )")
+ #       cur.execute("insert into bicycles (userid) values ('2' )")
 #        con.commit()
+        insert('s')
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
