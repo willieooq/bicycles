@@ -141,6 +141,7 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
         cur.execute("insert into bicycles (userid) values (UserId )")
+        cur.execute("insert into bicycles (userid) values ('1' )")
     elif (UserMsg == "變更稱呼"):
         
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
