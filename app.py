@@ -144,6 +144,7 @@ def handle_message(event):
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
         Name=UserMsg
         if Name=="變更稱呼" or Num== "變更電話":
+            line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
             line_bot_api.reply_message(Token, TextSendMessage(text=Name))
   #      line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
