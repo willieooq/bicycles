@@ -169,7 +169,7 @@ def handle_message(event):
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
         line_bot_api.reply_message(Token,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
 #commit the transcation
-
+con.commit()
 
 #close the cur 
 cur.close()
