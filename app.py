@@ -23,10 +23,10 @@ line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8Wpdvue
 handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
 to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
 #變數
-#levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
+levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
 
-#Name="變更稱呼"
-#Num='變更電話'
+Name="變更稱呼"
+Num='變更電話'
 #選單
 #大廳
 title_btn =ButtonsTemplate(
@@ -132,32 +132,7 @@ def handle_message(event):
     Token=event.reply_token
     user_id = event.source.user_id
     #DB
-##    table.put_item(
-##        Item={
-##            'UserID':user_id,
-##            'Name':"未填",
-##            'Num':"未填"
-##        )
-##'''    table.put_item(
-##    Item={
-##            'UserID':user_id,
-##            'Time':'Time',
-####            'Address':'local',
-####            'Photo':'None',
-####            'City':,
-####            'Detail':,
-####            'Handler':'未指派',
-####            'Lat':,'34324'
-####            'Long':'3534', 
-##            'Name':"未填",
-##            'Num':"未填"
-####            'Score':0,
-####            'Status':'已舉報',
-####            'updatedate':'00' 
-##        }
-##    )
-##    resp = table.get_item(Key={'UserID':user_id})
-##    item = resp['Item']'
+
     #測試用
     if UserMsg == '點我回到大廳':
         line_bot_api.reply_message(Token,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
@@ -168,6 +143,7 @@ def handle_message(event):
  #       if Name=="變更稱呼" or Num== "變更電話":
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
         Name=UserMsg
+        line_bot_api.reply_message(Token, TextSendMessage(text=Name))
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token, [ImageSendMessage(original_content_url=
