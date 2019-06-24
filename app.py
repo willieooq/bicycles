@@ -10,19 +10,27 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from db import *
 
 import psycopg2
 import datetime
 import os
 
 app = Flask(__name__)
-#DB
+#conncect to the db
+
+con = psycopg2.connect(
+            host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
+            database = 'df3vg11r7cab9s',
+            user = 'ouwlmxtvewdibl',
+            password ='05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131',
+            port = '5432')
 
 # Channel Access Token
 line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
 handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
 to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
+#cursor
+cur = con.cursor()
 #變數
 levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
 
@@ -165,7 +173,16 @@ def handle_message(event):
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
         line_bot_api.reply_message(Token,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
 
+#rows = cur.fetchall()
 
+#commit the transcation
+con.commit()
+
+#close the cur 
+cur.close()
+
+#close the connection
+con.close()
 import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
