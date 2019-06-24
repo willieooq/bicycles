@@ -149,7 +149,7 @@ def handle_message(event):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
         cur.execute("insert into bicycles (userid) values ('2' )")
-        con.commit()
+#        con.commit()
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
