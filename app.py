@@ -151,6 +151,7 @@ def handle_message(event):
         TextSendMessage(text=UserId)])
         cur.execute("insert into bicycles (userid) values (UserId )")
         cur.execute("insert into bicycles (userid) values ('1' )")
+        con.commit()
     elif (UserMsg == "變更稱呼"):
         
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
