@@ -16,7 +16,15 @@ import datetime
 import os
 
 app = Flask(__name__)
-#DB
+#conncect to the db
+
+con = psycopg2.connect(
+            host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
+            database = 'df3vg11r7cab9s',
+            user = 'ouwlmxtvewdibl',
+            password ='05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131',
+            port = '5432')
+cur = con.cursor()
 
 # Channel Access Token
 line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
@@ -138,7 +146,11 @@ def handle_message(event):
         line_bot_api.reply_message(Token,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
+        cur.execute("insert into bicycles (userid) values (UserId )")
+        cur.execute("insert into bicycles (userid) values ('1' )")
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
+        cur.execute("insert into bicycles (userid) values ('2' )")
+        con.commit()
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
         line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
@@ -157,7 +169,14 @@ def handle_message(event):
                                             TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
         line_bot_api.reply_message(Token,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
+#commit the transcation
 
+
+#close the cur 
+cur.close()
+
+#close the connection
+con.close()
 
 import os
 if __name__ == "__main__":
