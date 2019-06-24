@@ -10,6 +10,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
+from db import *
 
 import psycopg2
 import datetime
