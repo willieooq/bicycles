@@ -10,7 +10,6 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from db import *
 import psycopg2
 import datetime
 import os
@@ -18,21 +17,40 @@ import os
 app = Flask(__name__)
 #conncect to the db
 
-con = psycopg2.connect(
-            host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
-            database = 'df3vg11r7cab9s',
-            user = 'ouwlmxtvewdibl',
-            password ='05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131',
-            port = '5432')
-cur = con.cursor()
+# con = psycopg2.connect(
+#             host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
+#             database = 'df3vg11r7cab9s',
+#             user = 'ouwlmxtvewdibl',
+#             password ='05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131',
+#             port = '5432')
+# cur = con.cursor()
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ouwlmxtvewdibl:05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131@ec2-54-83-192-245.compute-1.amazonaws.com:5432/df3vg11r7cab9s'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 # Channel Access Token
 line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
 handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
 to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
-#變數
+#變數、類別
 levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
+class PictureDate(db.Model):
+    __tablename__ = 'PictureDate'
 
+    Id = db.Column(db.Integer, primary_key=True)
+    Uuid = db.Column(db.String(64), unique=True)
+    Title = db.Column(db.String(64))
+    Name = db.Column(db.String(64))
+    Description = db.Column(db.String(128))
+    def __init__(self, Uuid, Title, Description):
+        self.Uuid = Uuid
+        self.Title = Title
+        self.Description = Description
 Name="變更稱呼"
 Num='變更電話'
 #選單
@@ -148,8 +166,7 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        cur.executemany("insert into bicycles (userid) values (%(Name)s)",item)
-        con.commit()
+        db.session.add(PictureDate(Uuid='w'))
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
@@ -169,14 +186,7 @@ def handle_message(event):
                                             TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
         line_bot_api.reply_message(Token,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
-#commit the transcation
-con.commit()
-
-#close the cur 
-cur.close()
-
-#close the connection
-con.close()
+db.session.commit()
 
 import os
 if __name__ == "__main__":
