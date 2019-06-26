@@ -24,7 +24,6 @@ app = Flask(__name__)
 #             password ='05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131',
 #             port = '5432')
 # cur = con.cursor()
-app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ouwlmxtvewdibl:05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131@ec2-54-83-192-245.compute-1.amazonaws.com:5432/df3vg11r7cab9s'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -193,7 +192,7 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = Bicycles(Num='9912')
+        insert_data = Bicycles(Num='8912')
         db.session.add(insert_data)
         db.session.commit()
 #        insert(UserMsg)
