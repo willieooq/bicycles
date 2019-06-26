@@ -1,7 +1,14 @@
 import psycopg2
-from app import *
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+from linebot.exceptions import (
+    InvalidSignatureError
+)
+from linebot.models import *
+#from app import *
 #conncect to the db
-
+item =[{'Userid':'2','Name':'name'}]
 con = psycopg2.connect(
             host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
             database = 'df3vg11r7cab9s',
@@ -11,12 +18,13 @@ con = psycopg2.connect(
 
 #cursor
 cur = con.cursor()
-#x= input('please input x')
+#x= input('please input x= ')
 #cur.execute("insert into weather (city,date) values ('tapei','2014-11-29' )",)
-#cur.execute("insert into bicycles (userid) values (UserId )")
+
 
 def insert(a):
-    cur.execute("insert into bicycles (userid) values (%s)",(str(a)))
+    cur.executemany("insert into bicycles (userid) values (%(Userid)s)",item)
+ #   cur.execute("insert into bicycles (userid) values (%s)",(str(a)))
     line_bot_api.push_message(to, TextSendMessage(text="Success"))
 #    print('Success')
 #cur.execute("select city, date from weather")
