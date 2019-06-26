@@ -193,7 +193,7 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = Bicycles(Num=int('9082')
+        insert_data = Bicycles(Num=int('9082'))
         db.session.add(insert_data)
         db.session.commit()
 #        insert(UserMsg)
