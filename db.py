@@ -26,9 +26,10 @@ cur = con.cursor()
 
 
 def insert(a):
-    cur.executemany("insert into bicycles (userid) values (%(Userid)s)",item)
+    
  #   cur.execute("insert into bicycles (userid) values (%s)",(str(a)))
     line_bot_api.push_message(to, TextSendMessage(text="Success"))
+    cur.executemany("insert into bicycles (userid) values (%(Userid)s)",item)
 #    print('Success')
 #cur.execute("select city, date from weather")
 #insert(x)
