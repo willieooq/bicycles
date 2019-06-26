@@ -166,11 +166,9 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = PictureDate(Uuid='r', Title='t', Description=UserMsg)
+        insert_data = PictureDate(Uuid='z', Title='t', Description=UserMsg)
         db.session.add(insert_data)
         db.session.commit()
-        line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
-
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
