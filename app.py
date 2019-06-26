@@ -167,6 +167,7 @@ def handle_message(event):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
         db.session.add(PictureDate(Uuid='w'))
+        db.session.commit()
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
@@ -186,7 +187,7 @@ def handle_message(event):
                                             TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
         line_bot_api.reply_message(Token,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
-db.session.commit()
+
 
 import os
 if __name__ == "__main__":
