@@ -1,5 +1,5 @@
 import psycopg2
-
+from app import *
 #conncect to the db
 
 con = psycopg2.connect(
@@ -17,7 +17,8 @@ cur = con.cursor()
 
 def insert(a):
     cur.execute("insert into bicycles (userid) values (%s)",(str(a)))
-    print('Success')
+    line_bot_api.push_message(to, TextSendMessage(text="Success"))
+#    print('Success')
 #cur.execute("select city, date from weather")
 #insert(x)
 #rows = cur.fetchall()
