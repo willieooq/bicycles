@@ -39,20 +39,47 @@ handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
 to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
 #變數、類別
 levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
-class PictureDate(db.Model):
-    __tablename__ = 'PictureDate'
+item = [{'UserId' : 'UserId',
+        'Name' : 'Name',
+        'Num' : 'Num',
+        'Time' : 'Time',
+        'Address' : 'Address',
+        'Photo' : 'Photo',
+        'City' : 'City',
+        'Detail' : 'Detail',
+        'Handler' : 'Handler',
+        'Status' : 'Status',
+        'Score' : 'Score',
+        'Updatedate' : 'Updatedate'}]
+class Bicycles(db.Model):
+    __tablename__ = 'Bicycles'
 
-    Id = db.Column(db.Integer, primary_key=True)
-    Uuid = db.Column(db.String(64), unique=True)
-    Title = db.Column(db.String(64))
+    UserId = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String(64))
-    Description = db.Column(db.String(128))
+    Num = db.Column(db.Integer)
+    Time = db.Column(db.TIMESTAMP)
+    Address = db.Column(db.String(64))
+    Photo = db.Column(db.String(64))
+    City = db.Column(db.String(64))
+    Detail = db.Column(db.String(64))
+    Handler = db.Column(db.String(64))
+    Status = db.Column(db.String(64))
+    Score = db.Column(db.Integer)
+    Updatedate = db.Column(db.TIMESTAMP)
     def __init__(self, Uuid, Title, Description):
-        self.Uuid = Uuid
-        self.Title = Title
-        self.Description = Description
-Name="變更稱呼"
-Num='變更電話'
+        self.UserId = UserId
+        self.Name = Name
+        self.Num = Num
+        self.Time = Time
+        self.Address = Address
+        self.Photo = Photo
+        self.City = City
+        self.Detail = Detail
+        self.Handler = Handler
+        self.Status = Status
+        self.Score = Score
+        self.Updatedate = Updatedate
+
 #選單
 #大廳
 title_btn =ButtonsTemplate(
@@ -154,40 +181,40 @@ line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳�
 line_bot_api.push_message(to, TemplateSendMessage(alt_text="Template Example1", template=title_btn))
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    UserMsg=event.message.text
-    Token=event.reply_token
+    UserMsg =event.message.text
+    Token =event.reply_token
     UserId = event.source.user_id
     #DB
 
     #測試用
     if UserMsg == '點我回到大廳':
-        line_bot_api.reply_message(Token,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
+        line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = PictureDate(Uuid='z', Title='t', Description=UserMsg)
+        insert_data = Bicycles(Num='0912')
         db.session.add(insert_data)
         db.session.commit()
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
-        line_bot_api.reply_message(Token, TextSendMessage(text="請輸入稱呼:"))
+        line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
         Name=UserMsg
-        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
+        line_bot_api.reply_message(Token , TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
-        line_bot_api.reply_message(Token, [ImageSendMessage(original_content_url=
+        line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
                                                             'https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD',
                                                             preview_image_url="https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD"),
                                             TextSendMessage(text="【廢棄腳踏車~重生!】是由一群小學生在2016年發起的公益活動，目的是要發動大家幫忙舉報路邊的廢棄腳踏車，讓清潔隊員可以回收再利用.\n這個活動先後獲得【國語日報】、【大愛電視】、【漢聲廣播電台】等媒體專題報導，並曾經獲得【捷安特】、【日立】、【伊藤園茶飲】、【巨匠電腦】、【佛蒙特咖哩】...等企業贊助。\n更榮獲2017年信義房屋社區一家楷模獎肯定，是最適合親子一起做的公益活動，可以讓孩子透過自己的作為改變社區環境，不但社區變美變安全、還能幫助資源回收、清理出更多空間，最重要的是讓孩子和父母一起體驗: 改變世界就由我開始! "),
                                             TemplateSendMessage(alt_text="活動說明", template=act_btn)])
     elif UserMsg == "廢棄腳踏車處理流程":
-        line_bot_api.reply_message(Token,[ImageSendMessage(original_content_url="https://i.imgur.com/6OyTIyr.gif",
+        line_bot_api.reply_message(Token ,[ImageSendMessage(original_content_url="https://i.imgur.com/6OyTIyr.gif",
                                                            preview_image_url="https://i.imgur.com/6OyTIyr.gif"),
                                                            TextSendMessage(text= "為您說明整個處理流程:清潔隊收到舉報後，會在三個工作天左右到現場勘查，如果確實符合標準，就會在腳踏車上張貼告示，再過七天清潔隊員會回來確認，如果告示仍在，就會把腳踏車回收到處置場並上網公告一個月，若都沒有車主來認領，就會進行拆解資源回收"),
                                             TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
-        line_bot_api.reply_message(Token,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
+        line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
 
 
 import os

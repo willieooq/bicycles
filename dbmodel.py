@@ -14,20 +14,25 @@ manager.add_command('db', MigrateCommand)
 
 
 class PictureDate(db.Model):
-    __tablename__ = 'PictureDate'
+    __tablename__ = 'Bicycles'
 
-    Id = db.Column(db.Integer, primary_key=True)
-    Uuid = db.Column(db.String(64), unique=True)
-    Title = db.Column(db.String(64))
+    UserId = db.Column(db.Integer, primary_key=True)
+#    Userid = db.Column(db.Integer, unique=True)
     Name = db.Column(db.String(64))
-    Description = db.Column(db.String(128))
-    def __init__(self, Uuid, Title, Description):
-        self.Uuid = Uuid
-        self.Title = Title
-        self.Description = Description
-insert_data = PictureDate(Uuid='w', Title='t', Description='f')
-db.session.add(insert_data)
-db.session.commit()
-print("DONE")
+    Num = db.Column(db.Integer)
+    Time = db.Column(db.TIMESTAMP)
+    Address = db.Column(db.String(64))
+    Photo = db.Column(db.String(64))
+    City = db.Column(db.String(64))
+    Detail = db.Column(db.String(64))
+    Handler = db.Column(db.String(64))
+    Status = db.Column(db.String(64))
+    Score = db.Column(db.Integer)
+    Updatedate =db.Column(db.TIMESTAMP)
+        
+##insert_data = PictureDate(Uuid='w', Title='t', Description='f')
+##db.session.add(insert_data)
+##db.session.commit()
+##print("DONE")
 if __name__ == '__main__':
     manager.run()
