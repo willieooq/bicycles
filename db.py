@@ -9,6 +9,9 @@ from linebot.models import *
 #from app import *
 #conncect to the db
 item =[{'Userid':'2','Name':'name'}]
+line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
+handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
+to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
 con = psycopg2.connect(
             host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
             database = 'df3vg11r7cab9s',
