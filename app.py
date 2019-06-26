@@ -66,7 +66,7 @@ class Bicycles(db.Model):
     Status = db.Column(db.String(64))
     Score = db.Column(db.Integer)
     Updatedate = db.Column(db.TIMESTAMP)
-    def __init__(self, UserId, Name, Num,Time,Address,Photo,City,Detail,Handler,Status,Score,Updatedate):
+    def __init__(self, UserId, Name, Num, Time, Address, Photo, City, Detail, Handler, Status, Score, Updatedate):
         self.UserId = UserId
         self.Name = Name
         self.Num = Num
@@ -193,7 +193,7 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = Bicycles(Num='9082')
+        insert_data = Bicycles(Num='9912')
         db.session.add(insert_data)
         db.session.commit()
 #        insert(UserMsg)
@@ -221,5 +221,5 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
+    manager.run()
 
