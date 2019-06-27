@@ -38,7 +38,7 @@ handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
 to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
 #變數、類別
 levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
-item = [{'UserId' : 'UserId',
+item = {'UserId' : 'UserId',
         'Name' : 'Name',
         'Num' : 'Num',
         'Time' : 'Time',
@@ -49,7 +49,7 @@ item = [{'UserId' : 'UserId',
         'Handler' : 'Handler',
         'Status' : 'Status',
         'Score' : 'Score',
-        'Updatedate' : 'Updatedate'}]
+        'Updatedate' : 'Updatedate'}
 
 #選單
 #大廳
