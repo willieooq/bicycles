@@ -12,12 +12,10 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-
-class PictureDate(db.Model):
+class Bicycles(db.Model):
     __tablename__ = 'Bicycles'
 
     UserId = db.Column(db.String(64), primary_key=True)
-#    Userid = db.Column(db.Integer, unique=True)
     Name = db.Column(db.String(64))
     Num = db.Column(db.Integer)
     Time = db.Column(db.TIMESTAMP)
@@ -28,11 +26,7 @@ class PictureDate(db.Model):
     Handler = db.Column(db.String(64))
     Status = db.Column(db.String(64))
     Score = db.Column(db.Integer)
-    Updatedate =db.Column(db.TIMESTAMP)
-        
-##insert_data = PictureDate(Uuid='w', Title='t', Description='f')
-##db.session.add(insert_data)
-##db.session.commit()
-##print("DONE")
+    Updatedate = db.Column(db.TIMESTAMP)
+    
 if __name__ == '__main__':
     manager.run()

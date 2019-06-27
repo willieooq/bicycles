@@ -13,7 +13,7 @@ from linebot.models import *
 import psycopg2
 import datetime
 import os
-
+from dbmodle import *
 app = Flask(__name__)
 #conncect to the db
 
@@ -50,34 +50,6 @@ item = [{'UserId' : 'UserId',
         'Status' : 'Status',
         'Score' : 'Score',
         'Updatedate' : 'Updatedate'}]
-class Bicycles(db.Model):
-    __tablename__ = 'Bicycles'
-
-    UserId = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String(64))
-    Num = db.Column(db.Integer)
-    Time = db.Column(db.TIMESTAMP)
-    Address = db.Column(db.String(64))
-    Photo = db.Column(db.String(64))
-    City = db.Column(db.String(64))
-    Detail = db.Column(db.String(64))
-    Handler = db.Column(db.String(64))
-    Status = db.Column(db.String(64))
-    Score = db.Column(db.Integer)
-    Updatedate = db.Column(db.TIMESTAMP)
-    def __init__(self, UserId, Name, Num, Time, Address, Photo, City, Detail, Handler, Status, Score, Updatedate):
-        self.UserId = UserId
-        self.Name = Name
-        self.Num = Num
-        self.Time = Time
-        self.Address = Address
-        self.Photo = Photo
-        self.City = City
-        self.Detail = Detail
-        self.Handler = Handler
-        self.Status = Status
-        self.Score = Score
-        self.Updatedate = Updatedate
 
 #選單
 #大廳
