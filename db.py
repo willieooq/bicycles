@@ -16,7 +16,7 @@ manager.add_command('db', MigrateCommand)
 class PictureDate(db.Model):
     __tablename__ = 'Bicycles'
 
-    UserId = db.Column(db.Integer, primary_key=True)
+    UserId = db.Column(db.String(64), primary_key=True)
 #    Userid = db.Column(db.Integer, unique=True)
     Name = db.Column(db.String(64))
     Num = db.Column(db.Integer)
