@@ -150,6 +150,7 @@ def callback():
 # 處理訊息
 line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
 line_bot_api.push_message(to, TemplateSendMessage(alt_text="Template Example1", template=title_btn))
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     UserMsg =event.message.text
@@ -162,7 +163,6 @@ def handle_message(event):
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
-#        cur.execute("insert into bicycles (userid) values (UserId )")
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
         insert_data = Bicycles(UserId='823808' ,Num='8912')
         db.session.add(insert_data)
