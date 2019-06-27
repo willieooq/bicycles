@@ -13,7 +13,7 @@ from linebot.models import *
 import psycopg2
 import datetime
 import os
-from dbmodle import *
+import datetime
 app = Flask(__name__)
 #conncect to the db
 
@@ -31,7 +31,35 @@ migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+class Bicycles(db.Model):
+    __tablename__ = 'Bicycles'
 
+    def __init__(self, UserId='NA', Name='NA', Num='0000000000',Time=datetime.datetime.now(),Address='NA',Photo='NA',City='NA',Detail='NA',Handler='not',Status='NA',Score='0',Updatedate=datetime.datetime.now()):
+        ID=db.Column(db.Integer, primary_key=True)
+        UserId = db.Column(db.String(64))
+        Name = db.Column(db.String(64))
+        Num = db.Column(db.Integer)
+        Time = db.Column(db.TIMESTAMP)
+        Address = db.Column(db.String(64))
+        Photo = db.Column(db.String(64))
+        City = db.Column(db.String(64))
+        Detail = db.Column(db.String(64))
+        Handler = db.Column(db.String(64))
+        Status = db.Column(db.String(64))
+        Score = db.Column(db.Integer)
+        Updatedate = db.Column(db.TIMESTAMP)
+        self.UserId = UserId
+        self.Name = Name
+        self.Num = Num
+        self.Time = Time
+        self.Address = Address
+        self.Photo = Photo
+        self.City = City
+        self.Detail = Detail
+        self.Handler = Handler
+        self.Status = Status
+        self.Score = Score
+        self.Updatedate = Updatedate
 # Channel Access Token
 line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
 handler = WebhookHandler('bd799d810b0b87531264f40763235c56')
@@ -155,7 +183,7 @@ line_bot_api.push_message(to, TemplateSendMessage(alt_text="Template Example1", 
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
-    UserId = event.source.user_id
+    User_Id = event.source.user_id
     #DB
 
     #測試用
@@ -164,7 +192,7 @@ def handle_message(event):
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
 #        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = Bicycles(UserId='823808' ,Num='8912')
+        insert_data = Bicycles(UserId=User_Id ,Num='8912')
         db.session.add(insert_data)
         db.session.commit()
 #        insert(UserMsg)
