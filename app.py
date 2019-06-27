@@ -50,7 +50,7 @@ item = {'UserId' : 'UserId',
         'Status' : 'Status',
         'Score' : 'Score',
         'Updatedate' : 'Updatedate'}
-#您只需填寫一次，小智會記住，以後就可以直接舉報囉!
+
 #選單
 #大廳
 title_btn =ButtonsTemplate(
@@ -70,8 +70,8 @@ title_btn =ButtonsTemplate(
 						    )
 #開始舉報廢棄腳踏車
 str_btn =ButtonsTemplate(
-                            title="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num'],
-#                            title='rule',
+ #                           title="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num'],
+                            title='請選擇',
                             text='Please select',
                             actions=[
                             MessageTemplateAction(
@@ -163,7 +163,8 @@ def handle_message(event):
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
-        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
+        line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
+                                          TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
         # insert_data = Bicycles(UserId=User_Id)
         # db.session.add(insert_data)
         # db.session.commit()
