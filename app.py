@@ -164,9 +164,9 @@ def handle_message(event):
                                           TemplateSendMessage(alt_text="Template Example1", template=title_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
-        insert_data = Bicycles(UserId=User_Id)
-        db.session.add(insert_data)
-        db.session.commit()
+        # insert_data = Bicycles(UserId=User_Id)
+        # db.session.add(insert_data)
+        # db.session.commit()
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
  #       if Name=="變更稱呼" or Num== "變更電話":
