@@ -50,7 +50,7 @@ item = {'UserId' : 'UserId',
         'Status' : 'Status',
         'Score' : 'Score',
         'Updatedate' : 'Updatedate'}
-
+#您只需填寫一次，小智會記住，以後就可以直接舉報囉!
 #選單
 #大廳
 title_btn =ButtonsTemplate(
@@ -70,7 +70,7 @@ title_btn =ButtonsTemplate(
 						    )
 #開始舉報廢棄腳踏車
 str_btn =ButtonsTemplate(
-                            title="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num'],
+                            title="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num'],
 #                            title='rule',
                             text='Please select',
                             actions=[
