@@ -1,7 +1,7 @@
 from db import *
 
 
-class PictureDate(db.Model):
+class Bicycles(db.Model):
     __tablename__ = 'Bicycles'
 
     def __init__(self, UserId, Name, Num,Time,Address,Photo,City,Detail,Handler,Status,Score,Updatedate):
