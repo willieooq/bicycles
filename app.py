@@ -39,8 +39,8 @@ to = "Ue7aa1b3d42ca4e7df1dc143cbc97d13c"
 #變數、類別
 levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", "國中一年級", "國中二年級", "國中三年級", "高中一年級", "高中二年級", "高中三年級", "大學一年級", "大學二年級", "大學三年級", "大學四年級", "碩士", "博士", "博士後研究", "助理教授", "副教授", "教授", "校長"]
 item = {'UserId' : 'UserId',
-        'Name' : 'Name',
-        'Num' : 'Num',
+        'Name' : '未填',
+        'Num' : '未填',
         'Time' : 'Time',
         'Address' : 'Address',
         'Photo' : 'Photo',
@@ -156,6 +156,9 @@ def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
     User_Id = event.source.user_id
+    insert_data = Bicycles(UserId=User_Id)
+    db.session.add(insert_data)
+    db.session.commit()
     #DB
 
     #測試用
@@ -170,9 +173,13 @@ def handle_message(event):
         # db.session.commit()
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
- #       if Name=="變更稱呼" or Num== "變更電話":
-        line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
-        Name=UserMsg
+        if Name=="未填" or Num== "未填":
+            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
+            if Name!="未填":
+                Name=UserMsg
+                insert_data = Bicycles(Name=Name)
+                db.session.add(insert_data)
+                db.session.commit()
         line_bot_api.reply_message(Token , TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
