@@ -1,8 +1,8 @@
 from db import *
 import datetime
 
-class Bicycles(db.Model):
-    __tablename__ = 'Bicycles'
+class bicycles(db.Model):
+    __tablename__ = 'bicycles'
 
     def __init__(self, UserId='NA', Name='NA', Num='0000000000',Time=datetime.datetime.now(),Address='NA',Photo='NA',City='NA',Detail='NA',Handler='not',Status='NA',Score='0',Updatedate=datetime.datetime.now()):
         

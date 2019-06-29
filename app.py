@@ -156,9 +156,9 @@ def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
     User_Id = event.source.user_id
-    insert_data = Bicycles(UserId=User_Id)
-    db.session.add(insert_data)
-    db.session.commit()
+    # insert_data = bicycles(UserId=User_Id)
+    # db.session.add(insert_data)
+    # db.session.commit()
     #DB
 
     #測試用
@@ -168,18 +168,18 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
                                           TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-        # insert_data = Bicycles(UserId=User_Id)
+        # insert_data = bicycles(UserId=User_Id)
         # db.session.add(insert_data)
         # db.session.commit()
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
-        if item['Name']=="未填" or item['Num']== "未填":
+        while item['Name']=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
             item['Name']=UserMsg
-            if item['Name']!="未填":
-                insert_data = Bicycles(Name=item['Name'])
-                db.session.add(insert_data)
-                db.session.commit()
+        else:    
+            insert_data = bicycles(Name=item['Name'])
+            db.session.add(insert_data)
+            db.session.commit()
         line_bot_api.reply_message(Token , TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=

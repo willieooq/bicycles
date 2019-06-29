@@ -13,8 +13,8 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 
-class Bicycles(db.Model):
-    __tablename__ = 'Bicycles'
+class bicycles(db.Model):
+    __tablename__ = 'bicycles'
     ID=db.Column(db.Integer, primary_key=True)
     UserId = db.Column(db.String(64))
     Name = db.Column(db.String(64))
