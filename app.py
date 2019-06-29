@@ -175,12 +175,13 @@ def handle_message(event):
     elif (UserMsg == "變更稱呼"):
         UserMsg="未填"
         while item['Name']=="未填":
-            line_bot_api.reply_message(Token , TextSendMessage(text=item['Name']))
+            line_bot_api.reply_message(Token , [TextSendMessage(text="請輸入稱呼:"),
+                                                TextSendMessage(text=item["Name"])])
             item['Name']=UserMsg
-            line_bot_api.reply_message(Token , TextSendMessage(text=item['Name']))   
-        insert_data = bicycles(Name=item['Name'])
-        db.session.add(insert_data)
-        db.session.commit()
+        else:    
+            insert_data = bicycles(Name=item['Name'])
+            db.session.add(insert_data)
+            db.session.commit()
         line_bot_api.reply_message(Token , TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
