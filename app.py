@@ -175,9 +175,9 @@ def handle_message(event):
     elif (UserMsg == "變更稱呼"):
         if item['Name']=="未填" or item['Num']== "未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
-            if item['Name'] !="未填":
-                Name=UserMsg
-                insert_data = Bicycles(Name=Name)
+            item['Name']=UserMsg
+            if item['Name']!="未填":
+                insert_data = Bicycles(Name=item['Name'])
                 db.session.add(insert_data)
                 db.session.commit()
         line_bot_api.reply_message(Token , TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
