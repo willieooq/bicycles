@@ -174,6 +174,7 @@ def handle_message(event):
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
         while item['Name']=="未填":
+            UserMsg="未填"
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
             item['Name']=UserMsg
         else:    
