@@ -174,10 +174,12 @@ def handle_message(event):
 #        insert(UserMsg)
     elif (UserMsg == "變更稱呼"):
         UserMsg="未填"
-        while UserMsg=="未填":
+        while item["Name"]=="未填":
             line_bot_api.reply_message(Token , [TextSendMessage(text="請輸入稱呼:"),
                                                 TextSendMessage(text=item["Name"])])
-            item['Name']=UserMsg
+            if item["Name"]=="未填":
+                item['Name']=UserMsg
+            break
         else:    
         # insert_data = bicycles(Name=item['Name'])
         # db.session.add(insert_data)
