@@ -155,10 +155,10 @@ line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳�
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
-    User_Id = event.source.user_id
-    # insert_data = bicycles(UserId=User_Id)
-    # db.session.add(insert_data)
-    # db.session.commit()
+    item['User_Id'] = event.source.user_id
+    insert_data = bicycles(UserId=item['User_Id'])
+    db.session.add(insert_data)
+    db.session.commit()
     #DB
 
     #測試用
@@ -201,8 +201,9 @@ def handle_message(event):
     else:
         if item["Name"]=="未填":
             item['Name']=UserMsg
-            insert_data = bicycles(Name=item['Name'])
-            db.session.add(insert_data)
+#            insert_data = bicycles(Name=item['Name'])
+            insert_data = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id'])
+            affected_rows.update({'Name':item['Name']})
             db.session.commit()
             #line_bot_api.push_message(to, TextSendMessage(text="Success"))
 
