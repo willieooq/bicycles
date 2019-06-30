@@ -158,7 +158,7 @@ def handle_message(event):
     item['User_Id'] = event.source.user_id
     filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
     if filter_UserId != None:
-        line_bot_api.push_message(to, TextSendMessage(text="life"))
+        break
     else:
         insert_UserId = bicycles(UserId=item['User_Id'])
         db.session.add(insert_UserId)
