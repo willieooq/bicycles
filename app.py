@@ -203,7 +203,7 @@ def handle_message(event):
             item['Name']=UserMsg
 #            insert_data = bicycles(Name=item['Name'])
             insert_data = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id'])
-            affected_rows.update({'Name':item['Name']})
+            insert_data.update({'Name':item['Name']})
             db.session.commit()
             #line_bot_api.push_message(to, TextSendMessage(text="Success"))
 
