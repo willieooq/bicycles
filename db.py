@@ -15,8 +15,7 @@ manager.add_command('db', MigrateCommand)
 
 class bicycles(db.Model):
     __tablename__ = 'bicycles'
-    ID=db.Column(db.Integer, primary_key=True)
-    UserId = db.Column(db.String(64))
+    UserId = db.Column(db.String(64), primary_key=True)
     Name = db.Column(db.String(64))
     Num = db.Column(db.Integer)
     Time = db.Column(db.TIMESTAMP)
