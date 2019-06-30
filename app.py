@@ -181,9 +181,9 @@ def handle_message(event):
 #            item['Name']=UserMsg
 #            break
 #        else:    
-         insert_data = bicycles(Name=item['Name'])
-         db.session.add(insert_data)
-         db.session.commit()
+        #  insert_data = bicycles(Name=item['Name'])
+        #  db.session.add(insert_data)
+        #  db.session.commit()
 #        line_bot_api.reply_message(Token , TemplateSendMessage(alt_text="變更稱呼", template=str_btn))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
