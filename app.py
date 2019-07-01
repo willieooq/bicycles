@@ -176,8 +176,8 @@ line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳�
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
-    item['User_Id'] = event.source.user_id
-    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
+    item['UserId'] = event.source.UserId
+    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
     #測試用
     if UserMsg == '回到大廳':
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
@@ -186,11 +186,11 @@ def handle_message(event):
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         if filter_UserId == None:
-            insert_UserId = bicycles(UserId=item['User_Id'])
+            insert_UserId = bicycles(UserId=item['UserId'])
             db.session.add(insert_UserId)
             db.session.commit()
         else:
-            filter_UserId  = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
+            filter_UserId  = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
             item["Name"]=filter_UserId.Name
             item["Num"]=filter_UserId.Num
         line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
@@ -220,12 +220,12 @@ def handle_message(event):
         #insert Name
         if item["Name"]=="未填":
             item['Name']=UserMsg
-            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id'])
+            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
             insert_Name.update({'Name':item['Name']})
             db.session.commit()
         elif item["Num"]=="未填":
             item['Num']=UserMsg 
-            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id'])
+            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
             insert_Name.update({'Num':item['Num']})
             db.session.commit()
 
