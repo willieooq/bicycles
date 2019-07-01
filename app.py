@@ -186,9 +186,9 @@ def handle_message(event):
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         if filter_UserId == None:
-            # insert_UserId = bicycles(UserId=item['UserId'])
-            # db.session.add(insert_UserId)
-            # db.session.commit()
+            insert_UserId = bicycles(UserId=item['UserId'])
+            db.session.add(insert_UserId)
+            db.session.commit()
         else:
             filter_UserId  = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
             item["Name"]=filter_UserId.Name
