@@ -218,16 +218,16 @@ def handle_message(event):
         line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
     else:
         #insert Name
-        # if item["Name"]=="未填":
-        #     item['Name']=UserMsg
-        #     insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-        #     insert_Name.update({'Name':item['Name']})
-        #     db.session.commit()
-        # elif item["Num"]=="未填":
-        #     item['Num']=UserMsg 
-        #     insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-        #     insert_Name.update({'Num':item['Num']})
-        #     db.session.commit()
+        if item["Name"]=="未填":
+            item['Name']=UserMsg
+            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+            insert_Name.update({'Name':item['Name']})
+            db.session.commit()
+        elif item["Num"]=="未填":
+            item['Num']=UserMsg 
+            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+            insert_Name.update({'Num':item['Num']})
+            db.session.commit()
 
 
 
