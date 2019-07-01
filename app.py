@@ -177,7 +177,7 @@ def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
     item['UserId'] = event.source.user_id
-    # filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
+    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
     #測試用
     if UserMsg == '回到大廳':
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
