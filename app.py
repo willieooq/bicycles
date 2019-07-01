@@ -177,7 +177,7 @@ def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
     item['UserId'] = event.source.UserId
-    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
+    # filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
     #測試用
     if UserMsg == '回到大廳':
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
@@ -218,16 +218,16 @@ def handle_message(event):
         line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
     else:
         #insert Name
-        if item["Name"]=="未填":
-            item['Name']=UserMsg
-            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-            insert_Name.update({'Name':item['Name']})
-            db.session.commit()
-        elif item["Num"]=="未填":
-            item['Num']=UserMsg 
-            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-            insert_Name.update({'Num':item['Num']})
-            db.session.commit()
+        # if item["Name"]=="未填":
+        #     item['Name']=UserMsg
+        #     insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+        #     insert_Name.update({'Name':item['Name']})
+        #     db.session.commit()
+        # elif item["Num"]=="未填":
+        #     item['Num']=UserMsg 
+        #     insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+        #     insert_Name.update({'Num':item['Num']})
+        #     db.session.commit()
 
 
 
