@@ -198,8 +198,8 @@ def handle_message(event):
     elif (UserMsg == "變更稱呼"):
         if item["Name"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
-        # else:
-        #     line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
+        else:
+            line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
     elif (UserMsg == "變更電話"):
         if item["Num"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="變更電話:"+item["Num"]))
