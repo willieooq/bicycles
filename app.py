@@ -176,33 +176,33 @@ line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳�
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
-    item['UserId'] = event.source.UserId
-    # filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
+    item['UserId'] = event.source.user_id
+    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
     #測試用
     if UserMsg == '回到大廳':
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
-    # elif UserMsg == "繼續舉報":
-    #     line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
+    elif UserMsg == "繼續舉報":
+        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
     elif (UserMsg == "開始舉報廢棄腳踏車"):
-        # if filter_UserId == None:
-        #     insert_UserId = bicycles(UserId=item['UserId'])
-        #     db.session.add(insert_UserId)
-        #     db.session.commit()
-        # else:
-        #     filter_UserId  = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
-        #     item["Name"]=filter_UserId.Name
-        #     item["Num"]=filter_UserId.Num
+        if filter_UserId == None:
+            insert_UserId = bicycles(UserId=item['UserId'])
+            db.session.add(insert_UserId)
+            db.session.commit()
+        else:
+            filter_UserId  = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
+            item["Name"]=filter_UserId.Name
+            item["Num"]=filter_UserId.Num
         line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
                                           TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])            
-    # elif (UserMsg == "變更稱呼"):
-    #     if item["Name"]=="未填":
-    #         line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
-    #     # else:
-    #     #     line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
-    # elif (UserMsg == "變更電話"):
-    #     if item["Num"]=="未填":
-    #         line_bot_api.reply_message(Token , TextSendMessage(text="變更電話:"+item["Num"]))
+    elif (UserMsg == "變更稱呼"):
+        if item["Name"]=="未填":
+            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
+        # else:
+        #     line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
+    elif (UserMsg == "變更電話"):
+        if item["Num"]=="未填":
+            line_bot_api.reply_message(Token , TextSendMessage(text="變更電話:"+item["Num"]))
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
                                                             'https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD',
