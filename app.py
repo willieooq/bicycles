@@ -143,8 +143,8 @@ name_check = ButtonsTemplate(
                             text="變更稱呼",)]
                             )
 num_check = ButtonsTemplate(
-                            title='您現在的電話為"'+item['Num']+'"\n確定要變更嗎?',
-                            text='Please select',
+                            title='您現在的電話為"'+item['Num']+'"',
+                            text='確定要變更嗎?',
                             actions=[
                             MessageTemplateAction(
                             label="繼續舉報", 
@@ -178,14 +178,6 @@ def handle_message(event):
     Token =event.reply_token
     item['User_Id'] = event.source.user_id
     filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
-    # if filter_UserId != None:
-    #     break
-    # else:
-    #     insert_UserId = bicycles(UserId=item['User_Id'])
-    #     db.session.add(insert_UserId)
-    #     db.session.commit()
-    #DB
-
     #測試用
     if UserMsg == '回到大廳':
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
@@ -200,14 +192,14 @@ def handle_message(event):
             db.session.add(insert_UserId)
             db.session.commit()
         else:
-            custom  = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
-            item["Name"]=custom.Name
-            item["Num"]=custom.Num
+            filter_UserId  = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
+            item["Name"]=filter_UserId.Name
+            item["Num"]=filter_UserId.Num
     elif (UserMsg == "變更稱呼"):
         if item["Name"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
-        else:
-            line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
+        # else:
+        #     line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
     elif (UserMsg == "變更電話"):
         if item["Num"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="變更電話:"+item["Num"]))
