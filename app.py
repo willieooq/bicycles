@@ -157,12 +157,12 @@ def handle_message(event):
     Token =event.reply_token
     item['User_Id'] = event.source.user_id
     filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['User_Id']).first()
-    if filter_UserId != None:
-        break
-    else:
-        insert_UserId = bicycles(UserId=item['User_Id'])
-        db.session.add(insert_UserId)
-        db.session.commit()
+    # if filter_UserId != None:
+    #     break
+    # else:
+    #     insert_UserId = bicycles(UserId=item['User_Id'])
+    #     db.session.add(insert_UserId)
+    #     db.session.commit()
     #DB
 
     #測試用
@@ -172,6 +172,12 @@ def handle_message(event):
     elif (UserMsg == "開始舉報廢棄腳踏車"):
         line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
                                           TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+        if filter_UserId != None:
+            break
+        else:
+            insert_UserId = bicycles(UserId=item['User_Id'])
+            db.session.add(insert_UserId)
+            db.session.commit()
     elif (UserMsg == "變更稱呼"):
         if item["Name"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
