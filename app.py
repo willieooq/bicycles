@@ -210,9 +210,9 @@ def handle_message(event):
             # line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
     elif (UserMsg == "變更電話"):
         if item["Num"]=="未填":
-            line_bot_api.reply_message(Token , TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'))
+            line_bot_api.reply_message(Token , TextSendMessage(text='請輸入電話"'+str(item['Num'])+'"'))
         else:
-            line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+str(item['Num']+'"')),
+            line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'),
                                             TemplateSendMessage(alt_text="變更電話", template=num_check)])
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
