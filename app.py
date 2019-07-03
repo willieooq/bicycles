@@ -244,8 +244,8 @@ def handle_message(event):
             insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
             insert_Name.update({'Num':item['Num']})
             db.session.commit()
-        else:
-            line_bot_api.reply_message(Token , TextSendMessage(text=UserMsg))
+        # else:
+        #     line_bot_api.reply_message(Token , TextSendMessage(text=UserMsg))
 
 import os
 if __name__ == "__main__":
