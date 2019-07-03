@@ -181,7 +181,7 @@ line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳�
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
-    UserJpg = event.message.picture
+    # UserJpg = event.message.picture
     item['UserId'] = event.source.user_id
     #ID check
     filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()            
@@ -199,10 +199,10 @@ def handle_message(event):
         line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
                                         TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
     elif (UserMsg == "開始舉報廢棄腳踏車"):
-        # if item['Name'] or item['Num'] == "未填":
-        #     line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
-        #                                     TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-        # else:
+        if item['Name'] or item['Num'] == "未填":
+            line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+                                            TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+        else:
             line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
                                         TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
 
@@ -244,8 +244,8 @@ def handle_message(event):
             insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
             insert_Name.update({'Num':item['Num']})
             db.session.commit()
-        # else:
-        #     line_bot_api.reply_message(Token , TextSendMessage(text=UserMsg))
+        else:
+            line_bot_api.reply_message(Token , TextSendMessage(text=UserMsg))
 
 import os
 if __name__ == "__main__":
