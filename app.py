@@ -201,7 +201,7 @@ def handle_message(event):
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
         else:
             line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的名字為"'+item['Name']+'"'),
-                                            TemplateSendMessage(alt_text="變更稱呼", template=name_check))
+                                            TemplateSendMessage(alt_text="變更稱呼", template=name_check)])
             # line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
     elif (UserMsg == "變更電話"):
         if item["Num"]=="未填":
