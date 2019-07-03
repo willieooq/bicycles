@@ -132,8 +132,8 @@ process_btn=ButtonsTemplate(
                             text="建議與回饋")]
                             )
 name_check = ButtonsTemplate(
-                            title='您現在的名字為"'+item['Name']+'"',
-                            text=item['Name'],
+                            title='確定要變更嗎?',
+                            text='請選擇',
                             actions=[
                             MessageTemplateAction(
                             label="繼續舉報", 
@@ -193,14 +193,16 @@ def handle_message(event):
     elif UserMsg == "繼續舉報":
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
     elif (UserMsg == "開始舉報廢棄腳踏車"):
-        line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
-                                        TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
+        # line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
+        #                                 TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
     elif (UserMsg == "變更稱呼"):
         if item["Name"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
         else:
-            # line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
-            line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
+            line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的名字為"'+item['Name']+'"'),
+                                            TemplateSendMessage(alt_text="變更稱呼", template=name_check))
+            # line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
     elif (UserMsg == "變更電話"):
         if item["Num"]=="未填":
             line_bot_api.reply_message(Token , TextSendMessage(text="變更電話:"+item["Num"]))
