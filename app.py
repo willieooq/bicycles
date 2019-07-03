@@ -215,7 +215,7 @@ def handle_message(event):
             #line_bot_api.reply_message(Token , TextSendMessage(text="請輸入電話:"+item["Num"]))
             line_bot_api.reply_message(Token , TextSendMessage(text="1"))
         else:
-            line_bot_api.reply_message(Token , TextSendMessage(text='您現在的電話為"'+item['Num']+'"'))
+            line_bot_api.reply_message(Token , TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'))
             # line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+item['Num']+'"'),
             #                                 TemplateSendMessage(alt_text="變更電話", template=num_check)])
     elif UserMsg == '活動說明':
