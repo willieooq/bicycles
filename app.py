@@ -143,8 +143,8 @@ name_check = ButtonsTemplate(
                             text="變更稱呼",)]
                             )
 num_check = ButtonsTemplate(
-                            title='您現在的電話為"'+item['Num']+'"',
-                            text='確定要變更嗎?',
+                            title='確定要變更嗎?',
+                            text='請選擇',
                             actions=[
                             MessageTemplateAction(
                             label="繼續舉報", 
@@ -193,7 +193,8 @@ def handle_message(event):
     elif UserMsg == "繼續舉報":
         line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
     elif (UserMsg == "開始舉報廢棄腳踏車"):
-        line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn))
+        line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
+            TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
         # line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+item['Num']),
         #                                 TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
     elif (UserMsg == "變更稱呼"):
@@ -205,7 +206,10 @@ def handle_message(event):
             # line_bot_api.reply_message(Token, TemplateSendMessage(alt_text="變更稱呼", template=name_check))
     elif (UserMsg == "變更電話"):
         if item["Num"]=="未填":
-            line_bot_api.reply_message(Token , TextSendMessage(text="變更電話:"+item["Num"]))
+            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入電話:"+item["Num"]))
+        else:
+            line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+item['Num']+'"'),
+                                            TemplateSendMessage(alt_text="變更電話", template=num_check)])
     elif UserMsg == '活動說明':
         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
                                                             'https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD',
