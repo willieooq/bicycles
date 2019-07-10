@@ -1,4 +1,4 @@
-from imgurpython import ImgurClient
+# from imgurpython import ImgurClient
 # imgur key
 client_id = '99d11a7b69e6d6d'
 client_secret = '93852968238cb8cf74aef86ecf66765b794d27a8'
