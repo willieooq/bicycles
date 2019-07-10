@@ -2,7 +2,6 @@ from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from imgurpython import ImgurClient
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -13,11 +12,18 @@ from linebot.exceptions import (
 from linebot.models import *
 import psycopg2
 import datetime
-import tempfile, os
+import os
 from dbmodle import *
-
-#DB token
 app = Flask(__name__)
+#conncect to the db
+
+# con = psycopg2.connect(
+#             host = 'ec2-54-83-192-245.compute-1.amazonaws.com',
+#             database = 'df3vg11r7cab9s',
+#             user = 'ouwlmxtvewdibl',
+#             password ='05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131',
+#             port = '5432')
+# cur = con.cursor()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ouwlmxtvewdibl:05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131@ec2-54-83-192-245.compute-1.amazonaws.com:5432/df3vg11r7cab9s'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -25,12 +31,6 @@ migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-# imgur key
-# client_id = '99d11a7b69e6d6d'
-# client_secret = '93852968238cb8cf74aef86ecf66765b794d27a8'
-# album_id = 'iXPWwiK'
-# access_token = '6a615516a636718f7cf5d1b085fdc8d2f7ac415f'
-# refresh_token = '47b3f8ae361407d25cf06cb281b7f5c93c332ff9'
 
 # Channel Access Token
 line_bot_api = LineBotApi("Z89KlbPxoc+N16dQw2gIOBUj1nht+r3FZLqjnHdGHX/WUZ8WpdvueISiYf+0J71JNll4ZJBw+D3QEHDjI8AwqxMMcS8dISHLl5YKn+FEyEnWp3Yt7pqE+Pl7hJ/5bgBSYOeyniI/pBKiD89LfE6+dwdB04t89/1O/w1cDnyilFU=")
@@ -153,7 +153,6 @@ num_check = ButtonsTemplate(
                             label="變更電話",
                             text="變更電話",)]
                             )
-# static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -169,11 +168,11 @@ def callback():
         abort(400)
     return 'OK'
 #加入歡迎
-# @handler.add(FollowEvent)
-# def handle_follow(event):
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage(text='Joined this ' + event.source.type))
+@handler.add(JoinEvent)
+def handle_join(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text='Joined this ' + event.source.type))
 # 處理訊息
 #line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
 line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn))
@@ -194,9 +193,8 @@ def handle_message(event):
         item["Name"]=filter_UserId.Name
         item["Num"]=filter_UserId.Num
     if UserMsg == '回到大廳':
-        line_bot_api.reply_message(Token ,TextSendMessage(text=event.message.id))
-        # line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
-        #                                   TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
+        line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
+                                          TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
     elif UserMsg == "繼續舉報":
         line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
                                         TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
@@ -234,42 +232,6 @@ def handle_message(event):
                                             TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
         line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
-    # elif isinstance(event.message, ImageMessage):
-    #     ext = 'jpg'
-    #     message_content = line_bot_api.get_message_content(event.message.id)
-    #     with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix=ext + '-', delete=False) as tf:
-    #         for chunk in message_content.iter_content():
-    #             tf.write(chunk)
-    #         tempfile_path = tf.name
-
-    #     dist_path = tempfile_path + '.' + ext
-    #     dist_name = os.path.basename(dist_path)
-    #     os.rename(tempfile_path, dist_path)
-    #     try:
-    #         client = ImgurClient(client_id, client_secret, access_token, refresh_token)
-    #         config = {
-    #             'album': album_id,
-    #             'name': 'Catastrophe!',
-    #             'title': 'Catastrophe!',
-    #             'description': 'Cute kitten being cute on '
-    #         }
-    #         path = os.path.join('static', 'tmp', dist_name)
-    #         client.upload_from_path(path, config=config, anon=False)
-    #         os.remove(path)
-    #         print(path)
-    #         line_bot_api.reply_message(
-    #             event.reply_token,
-    #             TextSendMessage(text='上傳成功'))
-    #     except:
-    #         line_bot_api.reply_message(
-    #             event.reply_token,
-    #             TextSendMessage(text='上傳失敗'))
-    #     return 0
-
-    # elif isinstance(event.message, VideoMessage):
-    #     ext = 'mp4'
-    # elif isinstance(event.message, AudioMessage):
-    #     ext = 'm4a'
     else:
         #insert Name
         if item["Name"]=="未填":
