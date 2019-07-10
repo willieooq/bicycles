@@ -14,7 +14,7 @@ import psycopg2
 import datetime
 import tempfile,os
 from dbmodle import *
-from imgur import *
+from imgur import client_id, client_secret, album_id, access_token, refresh_token
 #db key
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ouwlmxtvewdibl:05f09b74d57c0cf93c2594966a1e03e06c7ba3605d56b46d8ecce6f61da50131@ec2-54-83-192-245.compute-1.amazonaws.com:5432/df3vg11r7cab9s'
