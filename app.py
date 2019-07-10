@@ -174,7 +174,7 @@ def handle_follow(event):
 #line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
 line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn))
 
-@handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent, message=(ImageMessage, TextMessage))
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
@@ -232,40 +232,40 @@ def handle_message(event):
     elif UserMsg == '上傳圖片':
         line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
     elif isinstance(event.message, ImageMessage):
-        line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
-        # ext = 'jpg'
-        # message_content = line_bot_api.get_message_content(event.message.id)
-        # with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix=ext + '-', delete=False) as tf:
-        #     for chunk in message_content.iter_content():
-        #         tf.write(chunk)
-        #     tempfile_path = tf.name
+        # line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
+        ext = 'jpg'
+        message_content = line_bot_api.get_message_content(event.message.id)
+        with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix=ext + '-', delete=False) as tf:
+            for chunk in message_content.iter_content():
+                tf.write(chunk)
+            tempfile_path = tf.name
 
-        # dist_path = tempfile_path + '.' + ext
-        # dist_name = os.path.basename(dist_path)
-        # os.rename(tempfile_path, dist_path)
-        # try:
-        #     client = ImgurClient(client_id, client_secret, access_token, refresh_token)
-        #     config = {
-        #         'album': album_id,
-        #         'name': 'Catastrophe!',
-        #         'title': 'Catastrophe!',
-        #         'description': 'Cute kitten being cute on '
-        #     }
-        #     path = os.path.join('static', 'tmp', dist_name)
-        #     client.upload_from_path(path, config=config, anon=False)
-        #     os.remove(path)
-        #     print(path)
-        #     line_bot_api.reply_message(
-        #         event.reply_token,
-        #         TextSendMessage(text='上傳成功'))
-        # except:
-        #     line_bot_api.reply_message(
-        #         event.reply_token,
-        #         TextSendMessage(text='上傳失敗'))
-    # elif isinstance(event.message, VideoMessage):
-    #     ext = 'mp4'
-    # elif isinstance(event.message, AudioMessage):
-    #     ext = 'm4a'
+        dist_path = tempfile_path + '.' + ext
+        dist_name = os.path.basename(dist_path)
+        os.rename(tempfile_path, dist_path)
+        try:
+            client = ImgurClient(client_id, client_secret, access_token, refresh_token)
+            config = {
+                'album': album_id,
+                'name': 'Catastrophe!',
+                'title': 'Catastrophe!',
+                'description': 'Cute kitten being cute on '
+            }
+            path = os.path.join('static', 'tmp', dist_name)
+            client.upload_from_path(path, config=config, anon=False)
+            os.remove(path)
+            print(path)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='上傳成功'))
+        except:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='上傳失敗'))
+    elif isinstance(event.message, VideoMessage):
+        ext = 'mp4'
+    elif isinstance(event.message, AudioMessage):
+        ext = 'm4a'
     else:
         #insert Name
         if item["Name"]=="未填":
