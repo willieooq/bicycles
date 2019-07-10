@@ -168,8 +168,8 @@ def callback():
         abort(400)
     return 'OK'
 #加入歡迎
-@handler.add(JoinEvent)
-def handle_join(event):
+@handler.add(Follow event)
+def handle_follow(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text='Joined this ' + event.source.type))
