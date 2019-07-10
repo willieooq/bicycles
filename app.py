@@ -10,7 +10,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-import psycopg2
+from imgurpython import ImgurClient
 import datetime
 import tempfile,os
 from dbmodle import *
