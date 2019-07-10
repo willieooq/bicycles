@@ -2,7 +2,7 @@ from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from imgurpython import ImgurClient
+# from imgurpython import ImgurClient
 from linebot import (
     LineBotApi, WebhookHandler
 )
