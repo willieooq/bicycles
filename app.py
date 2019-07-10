@@ -2,7 +2,7 @@ from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-
+from imgurpython import ImgurClient
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -12,7 +12,7 @@ from linebot.exceptions import (
 from linebot.models import *
 import psycopg2
 import datetime
-import os
+import tempfile,os
 from dbmodle import *
 #db key
 app = Flask(__name__)
