@@ -153,7 +153,7 @@ num_check = ButtonsTemplate(
                             label="變更電話",
                             text="變更電話",)]
                             )
-static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
+# static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
