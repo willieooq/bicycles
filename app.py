@@ -42,7 +42,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message_content = line_bot_api.get_message_content('<message_id>')
-    with open(file_path, 'wb') as fd:
+    with open('C:/Users/wilieooq/Desktop/test.txt', 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
 if __name__ == "__main__":
