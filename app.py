@@ -10,7 +10,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from imgurpython  import *
+from imgurpython  import ImgurClient
 import datetime
 import tempfile,os
 from dbmodle import *
@@ -255,17 +255,13 @@ def handle_message(event):
             client.upload_from_path(path, config=config, anon=False)
             os.remove(path)
             print(path)
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text='上傳成功'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='上傳成功'))
         except:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text='上傳失敗'))
-    elif isinstance(event.message, VideoMessage):
-        ext = 'mp4'
-    elif isinstance(event.message, AudioMessage):
-        ext = 'm4a'
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='上傳失敗'))
+    # elif isinstance(event.message, VideoMessage):
+    #     ext = 'mp4'
+    # elif isinstance(event.message, AudioMessage):
+    #     ext = 'm4a'
     else:
         #insert Name
         if item["Name"]=="未填":
@@ -280,8 +276,6 @@ def handle_message(event):
             db.session.commit()
         else:
             line_bot_api.reply_message(Token , TextSendMessage(text='???'))
-
-import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
