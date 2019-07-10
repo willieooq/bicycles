@@ -169,11 +169,11 @@ def callback():
         abort(400)
     return 'OK'
 #加入歡迎
-@handler.add(FollowEvent)
-def handle_follow(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text='Joined this ' + event.source.type))
+# @handler.add(FollowEvent)
+# def handle_follow(event):
+#     line_bot_api.reply_message(
+#         event.reply_token,
+#         TextSendMessage(text='Joined this ' + event.source.type))
 # 處理訊息
 #line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
 line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn))
