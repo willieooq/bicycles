@@ -231,7 +231,7 @@ def handle_message(event):
         line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
     elif UserMsg == '上傳圖片':
         line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
-    elif isinstance(event.message, ImageMessage):
+    if isinstance(event.message, ImageMessage):
         line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
         # ext = 'jpg'
         # message_content = line_bot_api.get_message_content(event.message.id)
@@ -266,20 +266,20 @@ def handle_message(event):
     #     ext = 'mp4'
     # elif isinstance(event.message, AudioMessage):
     #     ext = 'm4a'
-    else:
-        #insert Name
-        if item["Name"]=="未填":
-            item['Name']=UserMsg
-            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-            insert_Name.update({'Name':item['Name']})
-            db.session.commit()
-        elif item["Num"]=="未填":
-            item['Num']=UserMsg 
-            insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-            insert_Name.update({'Num':item['Num']})
-            db.session.commit()
-        else:
-            line_bot_api.reply_message(Token , TextSendMessage(text='???'))
+    # else:
+    #     #insert Name
+    #     if item["Name"]=="未填":
+    #         item['Name']=UserMsg
+    #         insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+    #         insert_Name.update({'Name':item['Name']})
+    #         db.session.commit()
+    #     elif item["Num"]=="未填":
+    #         item['Num']=UserMsg 
+    #         insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+    #         insert_Name.update({'Num':item['Num']})
+    #         db.session.commit()
+    #     else:
+    #         line_bot_api.reply_message(Token , TextSendMessage(text='???'))
 
 import os
 if __name__ == "__main__":
