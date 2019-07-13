@@ -244,13 +244,13 @@ def handle_message(event):
 
         elif (UserMsg == "變更稱呼"):
             if item["Name"]=="未填":
-                line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"+item["Name"]))
+                line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
             else:
                 line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的名字為"'+item['Name']+'"'),
                                                 TemplateSendMessage(alt_text="變更稱呼", template=name_check)])
         elif (UserMsg == "變更電話"):
             if item["Num"]=="未填":
-                line_bot_api.reply_message(Token , TextSendMessage(text='請輸入電話"'+str(item['Num'])+'"'))
+                line_bot_api.reply_message(Token , TextSendMessage(text='請輸入電話'))
             else:
                 line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'),
                                                 TemplateSendMessage(alt_text="變更電話", template=num_check)])
@@ -271,12 +271,18 @@ def handle_message(event):
             line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
         else:
             #insert Name
-            if item["Name"]=="未填":
+            if item["Name"]=="未填" and UserMsg=="變更稱呼":
                 item['Name']=UserMsg
                 insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
                 insert_Name.update({'Name':item['Name']})
                 db.session.commit()
-            elif item["Num"]=="未填":
+                if item['Name'] or item['Num'] == "未填":
+                    line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+                                                    TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+                else:
+                    line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+                                                TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+            elif item["Num"]=="未填" and UserMsg == "變更電話":
                 item['Num']=UserMsg 
                 insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
                 insert_Name.update({'Num':item['Num']})
