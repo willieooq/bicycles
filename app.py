@@ -215,18 +215,16 @@ def handle_message(event):
     elif isinstance(event.message, TextMessage):
         UserMsg =event.message.text
         Token =event.reply_token
-        try:
             #insert data from db
             filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
-            if filter_UserId == None:
-                insert_UserId = bicycles(UserId=item['UserId'])
-                db.session.add(insert_UserId)
-                db.session.commit()
-                item['UserId'] = event.source.user_id
-                item["Name"]=filter_UserId.Name
-                item["Num"]=filter_UserId.Num
-        except:
-            line_bot_api.reply_message(Token ,[TextSendMessage(text="查無此用戶"),TextSendMessage(text="請重新加入好友")])
+        if filter_UserId == None:
+            insert_UserId = bicycles(UserId=item['UserId'])
+            db.session.add(insert_UserId)
+            db.session.commit()
+        else:
+            item['UserId'] = event.source.user_id
+            item["Name"]=filter_UserId.Name
+            item["Num"]=filter_UserId.Num
         if UserMsg == '回到大廳':
             line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                             TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
