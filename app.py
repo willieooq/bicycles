@@ -24,7 +24,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-# imgur key
 
 # Channel Access Token
 line_bot_api = LineBotApi(line_channel_access_token)
@@ -113,6 +112,7 @@ broken_btn=ButtonsTemplate(
                             label="建議與回饋",
                             text="建議與回饋")]
 			    )
+#過程            
 process_btn=ButtonsTemplate(
                             title='請選擇',
                             text='Please select',
@@ -127,6 +127,7 @@ process_btn=ButtonsTemplate(
                             label="建議與回饋",
                             text="建議與回饋")]
                             )
+#名稱
 name_check = ButtonsTemplate(
                             title='確定要變更嗎?',
                             text='Please select',
@@ -138,6 +139,7 @@ name_check = ButtonsTemplate(
                             label="變更稱呼",
                             text="變更稱呼",)]
                             )
+#電話
 num_check = ButtonsTemplate(
                             title='確定要變更嗎?',
                             text='Please select',
@@ -218,11 +220,14 @@ def handle_message(event):
     elif isinstance(event.message, TextMessage):
         UserMsg =event.message.text
         Token =event.reply_token
-        #insert data from db
-        filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()            
-        item['UserId'] = event.source.user_id
-        item["Name"]=filter_UserId.Name
-        item["Num"]=filter_UserId.Num
+        try:
+            #insert data from db
+            filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()            
+            item['UserId'] = event.source.user_id
+            item["Name"]=filter_UserId.Name
+            item["Num"]=filter_UserId.Num
+        except:
+            line_bot_api.reply_message(Token ,[TextSendMessage(text="查無此用戶"),TextSendMessage(text="請重新加入好友")])
         if UserMsg == '回到大廳':
             line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                             TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
