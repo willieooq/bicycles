@@ -134,10 +134,10 @@ name_check = ButtonsTemplate(
                             actions=[
                             MessageTemplateAction(
                             label="繼續舉報", 
-                            text="繼續舉報",),
+                            text="繼續舉報"),
                             MessageTemplateAction(
                             label="確定變更稱呼",
-                            text="變更稱呼",)]
+                            text="確定變更稱呼")]
                             )
 #電話
 num_check = ButtonsTemplate(
@@ -146,10 +146,10 @@ num_check = ButtonsTemplate(
                             actions=[
                             MessageTemplateAction(
                             label="繼續舉報", 
-                            text="繼續舉報",),
+                            text="繼續舉報"),
                             MessageTemplateAction(
                             label="確定變更電話",
-                            text="變更電話",)]
+                            text="確定變更電話")]
                             )
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -169,11 +169,6 @@ def callback():
 @handler.add(FollowEvent)
 def handle_follow(event):
     #ID check
-    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
-    if filter_UserId == None:
-        insert_UserId = bicycles(UserId=item['UserId'])
-        db.session.add(insert_UserId)
-        db.session.commit()
     line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn))
 # 處理訊息
 #line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
@@ -223,9 +218,13 @@ def handle_message(event):
         try:
             #insert data from db
             filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
-            item['UserId'] = event.source.user_id
-            item["Name"]=filter_UserId.Name
-            item["Num"]=filter_UserId.Num
+            if filter_UserId == None:
+                insert_UserId = bicycles(UserId=item['UserId'])
+                db.session.add(insert_UserId)
+                db.session.commit()
+                item['UserId'] = event.source.user_id
+                item["Name"]=filter_UserId.Name
+                item["Num"]=filter_UserId.Num
         except:
             line_bot_api.reply_message(Token ,[TextSendMessage(text="查無此用戶"),TextSendMessage(text="請重新加入好友")])
         if UserMsg == '回到大廳':
@@ -275,7 +274,7 @@ def handle_message(event):
             line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
         else:
             #insert Name
-            if item["Name"]=="未填" and UserMsg=="變更稱呼":
+            if (item["Name"]=="未填" and UserMsg=="變更稱呼") or (item["Name"]=="未填" and UserMsg=="確定變更稱呼"):
                 item['Name']=UserMsg
                 insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
                 insert_Name.update({'Name':item['Name']})
