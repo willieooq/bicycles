@@ -195,9 +195,9 @@ def handle_message(event):
             client = ImgurClient(client_id, client_secret, access_token, refresh_token)
             config = {
                 'album': album_id,
-                'name': 'Catastrophe!',
-                'title': 'Catastrophe!',
-                'description': 'Cute kitten being cute on '
+                'name': 'Bike',
+                'title': 'Bike',
+                'description': 'Broken bicycles '
             }
             path = os.path.join('static', 'tmp', dist_name)
             client.upload_from_path(path, config=config, anon=False)
@@ -206,6 +206,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='上傳成功'))
         except:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='上傳失敗'))
+        return 0
     # elif isinstance(event.message, VideoMessage):
     #     ext = 'mp4'
     # elif isinstance(event.message, AudioMessage):
