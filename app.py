@@ -137,7 +137,7 @@ name_check = ButtonsTemplate(
                             text="繼續舉報",),
                             MessageTemplateAction(
                             label="確定變更稱呼",
-                            text="確定變更稱呼",)]
+                            text="變更稱呼",)]
                             )
 #電話
 num_check = ButtonsTemplate(
@@ -149,7 +149,7 @@ num_check = ButtonsTemplate(
                             text="繼續舉報",),
                             MessageTemplateAction(
                             label="確定變更電話",
-                            text="確定變更電話",)]
+                            text="變更電話",)]
                             )
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -206,7 +206,7 @@ def handle_message(event):
             print(path)
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="Success"))
+                TextSendMessage(text='上傳成功'))
         except:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -222,7 +222,7 @@ def handle_message(event):
         Token =event.reply_token
         try:
             #insert data from db
-            filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()            
+            filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
             item['UserId'] = event.source.user_id
             item["Name"]=filter_UserId.Name
             item["Num"]=filter_UserId.Num
@@ -235,7 +235,7 @@ def handle_message(event):
             line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
                                             TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
         elif (UserMsg == "開始舉報廢棄腳踏車"):
-            if item['Name'] or item['Num'] == "未填":
+            if item['Name'] and item['Num'] != "未填":
                 line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
                                                 TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
             else:
