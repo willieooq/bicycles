@@ -175,7 +175,6 @@ line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳�
 def handle_message(event):
     UserMsg =event.message.text
     Token =event.reply_token
-    # UserJpg = event.message.picture
     item['UserId'] = event.source.user_id
     #ID check
     filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
