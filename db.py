@@ -17,7 +17,7 @@ class bicycles(db.Model):
     __tablename__ = 'bicycles'
     UserId = db.Column(db.String(64), primary_key=True)
     Name = db.Column(db.String(64))
-    Num = db.Column(db.Integer)
+    Num = db.Column(db.String(64))
     Time = db.Column(db.TIMESTAMP)
     Address = db.Column(db.String(64))
     Photo = db.Column(db.String(64))
