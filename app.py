@@ -178,14 +178,7 @@ def handle_message(event):
     # UserJpg = event.message.picture
     item['UserId'] = event.source.user_id
     #ID check
-    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()            
-    if filter_UserId == None:
-        insert_UserId = bicycles(UserId=item['UserId'])
-        db.session.add(insert_UserId)
-        db.session.commit()
-    else:
-        item["Name"]=filter_UserId.Name
-        item["Num"]=filter_UserId.Num
+    filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
     if isinstance(event.message, ImageMessage):
         # line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
         ext = 'jpg'
@@ -216,7 +209,14 @@ def handle_message(event):
     # elif isinstance(event.message, VideoMessage):
     #     ext = 'mp4'
     # elif isinstance(event.message, AudioMessage):
-    #     ext = 'm4a'
+    #     ext = 'm4a'            
+    if filter_UserId == None:
+        insert_UserId = bicycles(UserId=item['UserId'])
+        db.session.add(insert_UserId)
+        db.session.commit()
+    else:
+        item["Name"]=filter_UserId.Name
+        item["Num"]=filter_UserId.Num
     if UserMsg == '回到大廳':
         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
                                           TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
