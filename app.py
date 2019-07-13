@@ -136,8 +136,8 @@ name_check = ButtonsTemplate(
                             label="繼續舉報", 
                             text="繼續舉報",),
                             MessageTemplateAction(
-                            label="變更稱呼",
-                            text="變更稱呼",)]
+                            label="確定變更稱呼",
+                            text="確定變更稱呼",)]
                             )
 #電話
 num_check = ButtonsTemplate(
@@ -148,8 +148,8 @@ num_check = ButtonsTemplate(
                             label="繼續舉報", 
                             text="繼續舉報",),
                             MessageTemplateAction(
-                            label="變更電話",
-                            text="變更電話",)]
+                            label="確定變更電話",
+                            text="確定變更電話",)]
                             )
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -201,12 +201,12 @@ def handle_message(event):
                 'description': 'Cute kitten being cute on '
             }
             path = os.path.join('static', 'tmp', dist_name)
-            client.upload_from_path(path, config=config, anon=False)
+            image =client.upload_from_path(path, config=config, anon=False)
             os.remove(path)
             print(path)
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='上傳成功'))
+                TextSendMessage(text=image['link']))
         except:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -254,6 +254,10 @@ def handle_message(event):
             else:
                 line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'),
                                                 TemplateSendMessage(alt_text="變更電話", template=num_check)])
+        elif UserMsg == "確定變更稱呼":
+            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入新稱呼:"))
+        elif UserMsg == "確定變更電話":
+            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入新電話:"))
         elif UserMsg == '活動說明':
             line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
                                                                 'https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD',
@@ -282,7 +286,8 @@ def handle_message(event):
                 else:
                     line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
                                                 TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-            elif item["Num"]=="未填" and UserMsg == "變更電話":
+            elif item["Num"]=="未填":
+            #  and UserMsg == "變更電話":
                 item['Num']=UserMsg 
                 insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
                 insert_Name.update({'Num':item['Num']})
