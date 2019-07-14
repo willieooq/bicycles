@@ -213,7 +213,6 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(text='上傳失敗'))
         return 0
-
     elif isinstance(event.message, VideoMessage):
         ext = 'mp4'
     elif isinstance(event.message, AudioMessage):
