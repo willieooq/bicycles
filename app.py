@@ -217,80 +217,79 @@ def handle_message(event):
         ext = 'mp4'
     elif isinstance(event.message, AudioMessage):
         ext = 'm4a'
-    elif isinstance(event.message, TextMessage):
-        UserMsg =event.message.text
-        Token =event.reply_token
-        #insert data from db
-        item['UserId'] = event.source.user_id
-        filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
-        item["Name"]=filter_UserId.Name
-        item["Num"]=filter_UserId.Num
-        if UserMsg == '回到大廳':
-            line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
-                                            TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
-        elif UserMsg == "繼續舉報":
-            line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
-                                            TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-        elif (UserMsg == "開始舉報廢棄腳踏車"):
-            if item['Name'] and item['Num'] == "未填":
-                line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
-                                                TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-            else:
-                line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
-                                            TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-
-        elif (UserMsg == "變更稱呼"):
-            if item["Name"]=="未填":
-                line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
-            else:
-                line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的名字為"'+item['Name']+'"'),
-                                                TemplateSendMessage(alt_text="變更稱呼", template=name_check)])
-        elif (UserMsg == "變更電話"):
-            if item["Num"]=="未填":
-                line_bot_api.reply_message(Token , TextSendMessage(text='請輸入電話'))
-            else:
-                line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'),
-                                                TemplateSendMessage(alt_text="變更電話", template=num_check)])
-        elif UserMsg == "確定變更稱呼":
-            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入新稱呼:"))
-        elif UserMsg == "確定變更電話":
-            line_bot_api.reply_message(Token , TextSendMessage(text="請輸入新電話:"))
-        elif UserMsg == '活動說明':
-            line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
-                                                                'https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD',
-                                                                preview_image_url="https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD"),
-                                                TextSendMessage(text="【廢棄腳踏車~重生!】是由一群小學生在2016年發起的公益活動，目的是要發動大家幫忙舉報路邊的廢棄腳踏車，讓清潔隊員可以回收再利用.\n這個活動先後獲得【國語日報】、【大愛電視】、【漢聲廣播電台】等媒體專題報導，並曾經獲得【捷安特】、【日立】、【伊藤園茶飲】、【巨匠電腦】、【佛蒙特咖哩】...等企業贊助。\n更榮獲2017年信義房屋社區一家楷模獎肯定，是最適合親子一起做的公益活動，可以讓孩子透過自己的作為改變社區環境，不但社區變美變安全、還能幫助資源回收、清理出更多空間，最重要的是讓孩子和父母一起體驗: 改變世界就由我開始! "),
-                                                TemplateSendMessage(alt_text="活動說明", template=act_btn)])
-        elif UserMsg == "廢棄腳踏車處理流程":
-            line_bot_api.reply_message(Token ,[ImageSendMessage(original_content_url="https://i.imgur.com/6OyTIyr.gif",
-                                                            preview_image_url="https://i.imgur.com/6OyTIyr.gif"),
-                                                            TextSendMessage(text= "為您說明整個處理流程:清潔隊收到舉報後，會在三個工作天左右到現場勘查，如果確實符合標準，就會在腳踏車上張貼告示，再過七天清潔隊員會回來確認，如果告示仍在，就會把腳踏車回收到處置場並上網公告一個月，若都沒有車主來認領，就會進行拆解資源回收"),
-                                                TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
-        elif UserMsg == "怎麼判斷是廢棄的腳踏車":
-            line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
-        elif UserMsg == '上傳圖片':
-            line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
-        else:
-            #insert Name
-            if (item["Name"]=="未填" and UserMsg=="變更稱呼") or (item["Name"]!="未填" and UserMsg=="確定變更稱呼"):
-                item['Name']=UserMsg
-                insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-                insert_Name.update({'Name':item['Name']})
-                db.session.commit()
-                if item['Name'] or item['Num'] == "未填":
-                    line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
-                                                    TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-                else:
-                    line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
-                                                TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-            elif item["Num"]=="未填":
-            #  and UserMsg == "變更電話":
-                item['Num']=UserMsg 
-                insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
-                insert_Name.update({'Num':item['Num']})
-                db.session.commit()
-            else:
-                line_bot_api.reply_message(Token , TextSendMessage(text='???'))
+    # elif isinstance(event.message, TextMessage):
+    #     UserMsg =event.message.text
+    #     Token =event.reply_token
+    #     #insert data from db
+    #     item['UserId'] = event.source.user_id
+    #     filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
+    #     item["Name"]=filter_UserId.Name
+    #     item["Num"]=filter_UserId.Num
+    #     if UserMsg == '回到大廳':
+    #         line_bot_api.reply_message(Token ,[TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"),
+    #                                         TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn)])
+    #     elif UserMsg == "繼續舉報":
+    #         line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+    #                                         TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+    #     elif (UserMsg == "開始舉報廢棄腳踏車"):
+    #         if item['Name'] and item['Num'] == "未填":
+    #             line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+    #                                             TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+    #         else:
+    #             line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+    #                                         TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+    #     elif (UserMsg == "變更稱呼"):
+    #         if item["Name"]=="未填":
+    #             line_bot_api.reply_message(Token , TextSendMessage(text="請輸入稱呼:"))
+    #         else:
+    #             line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的名字為"'+item['Name']+'"'),
+    #                                             TemplateSendMessage(alt_text="變更稱呼", template=name_check)])
+    #     elif (UserMsg == "變更電話"):
+    #         if item["Num"]=="未填":
+    #             line_bot_api.reply_message(Token , TextSendMessage(text='請輸入電話'))
+    #         else:
+    #             line_bot_api.reply_message(Token , [TextSendMessage(text='您現在的電話為"'+str(item['Num'])+'"'),
+    #                                             TemplateSendMessage(alt_text="變更電話", template=num_check)])
+    #     elif UserMsg == "確定變更稱呼":
+    #         line_bot_api.reply_message(Token , TextSendMessage(text="請輸入新稱呼:"))
+    #     elif UserMsg == "確定變更電話":
+    #         line_bot_api.reply_message(Token , TextSendMessage(text="請輸入新電話:"))
+    #     elif UserMsg == '活動說明':
+    #         line_bot_api.reply_message(Token , [ImageSendMessage(original_content_url=
+    #                                                             'https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD',
+    #                                                             preview_image_url="https://scontent.ftpe12-1.fna.fbcdn.net/v/t1.0-9/61247413_874283832925037_2067012891634040832_o.jpg?_nc_cat=103&_nc_eui2=AeEJ5rT9dEt2-tY27RRJKwOtrfVDPM0F3a5ATB6dc7R3Hdu-qiAlDxx9vxcC153BUS5O8FzCrbdgqr_ZR1HS8Yp9Jeb55QqzPfO3hRpghZRM6A&_nc_ht=scontent.ftpe12-1.fna&oh=f5baf242e3c57b15afb458713347fbd4&oe=5D5142AD"),
+    #                                             TextSendMessage(text="【廢棄腳踏車~重生!】是由一群小學生在2016年發起的公益活動，目的是要發動大家幫忙舉報路邊的廢棄腳踏車，讓清潔隊員可以回收再利用.\n這個活動先後獲得【國語日報】、【大愛電視】、【漢聲廣播電台】等媒體專題報導，並曾經獲得【捷安特】、【日立】、【伊藤園茶飲】、【巨匠電腦】、【佛蒙特咖哩】...等企業贊助。\n更榮獲2017年信義房屋社區一家楷模獎肯定，是最適合親子一起做的公益活動，可以讓孩子透過自己的作為改變社區環境，不但社區變美變安全、還能幫助資源回收、清理出更多空間，最重要的是讓孩子和父母一起體驗: 改變世界就由我開始! "),
+    #                                             TemplateSendMessage(alt_text="活動說明", template=act_btn)])
+    #     elif UserMsg == "廢棄腳踏車處理流程":
+    #         line_bot_api.reply_message(Token ,[ImageSendMessage(original_content_url="https://i.imgur.com/6OyTIyr.gif",
+    #                                                         preview_image_url="https://i.imgur.com/6OyTIyr.gif"),
+    #                                                         TextSendMessage(text= "為您說明整個處理流程:清潔隊收到舉報後，會在三個工作天左右到現場勘查，如果確實符合標準，就會在腳踏車上張貼告示，再過七天清潔隊員會回來確認，如果告示仍在，就會把腳踏車回收到處置場並上網公告一個月，若都沒有車主來認領，就會進行拆解資源回收"),
+    #                                             TemplateSendMessage(alt_text="廢棄腳踏車處理流程",template=process_btn)])
+    #     elif UserMsg == "怎麼判斷是廢棄的腳踏車":
+    #         line_bot_api.reply_message(Token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
+    #     elif UserMsg == '上傳圖片':
+    #         line_bot_api.reply_message(Token ,TextSendMessage(text="請上傳圖片"))
+    #     else:
+    #         #insert Name
+    #         if (item["Name"]=="未填" and UserMsg=="變更稱呼") or (item["Name"]!="未填" and UserMsg=="確定變更稱呼"):
+    #             item['Name']=UserMsg
+    #             insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+    #             insert_Name.update({'Name':item['Name']})
+    #             db.session.commit()
+    #             if item['Name'] or item['Num'] == "未填":
+    #                 line_bot_api.reply_message(Token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+    #                                                 TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+    #             else:
+    #                 line_bot_api.reply_message(Token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['Name']+"\n聯絡電話:"+str(item['Num'])),
+    #                                             TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+    #         elif item["Num"]=="未填":
+    #         #  and UserMsg == "變更電話":
+    #             item['Num']=UserMsg 
+    #             insert_Name = db.session.query(bicycles).filter(bicycles.UserId==item['UserId'])
+    #             insert_Name.update({'Num':item['Num']})
+    #             db.session.commit()
+    #         else:
+    #             line_bot_api.reply_message(Token , TextSendMessage(text='???'))
             
 
 
