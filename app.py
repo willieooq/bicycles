@@ -216,7 +216,7 @@ def handle_message(event):
         UserMsg =event.message.text
         Token =event.reply_token
             #insert data from db
-            filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
+        filter_UserId = db.session.query(bicycles).filter(bicycles.UserId==item['UserId']).first()
         if filter_UserId == None:
             insert_UserId = bicycles(UserId=item['UserId'])
             db.session.add(insert_UserId)
