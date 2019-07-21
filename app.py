@@ -180,7 +180,7 @@ def handle_follow(event):
 #line_bot_api.push_message(to, TextSendMessage(text="您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務"))
 line_bot_api.push_message(to, TemplateSendMessage(alt_text="這是【廢棄腳踏車~重生!】活動大廳", template=title_btn))
 
-@handler.add(MessageEvent, message=(ImageMessage, TextMessage))
+@handler.add(MessageEvent, message=(ImageMessage, TextMessage, LocationMessage))
 def handle_message(event):
     if isinstance(event.message, ImageMessage):
         ext = 'jpg'
@@ -217,6 +217,15 @@ def handle_message(event):
         ext = 'mp4'
     elif isinstance(event.message, AudioMessage):
         ext = 'm4a'
+    elif isinstance(event.message, LocationMessage):
+        try:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='上傳成功'))
+        except:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='上傳失敗'))
     elif isinstance(event.message, TextMessage):
         UserMsg =event.message.text
         Token =event.reply_token
