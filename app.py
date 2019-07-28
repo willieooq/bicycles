@@ -417,18 +417,19 @@ def handle_message(event):
                     line_bot_api.reply_message(token, TextSendMessage(text='請輸入正確格式的電話號碼'))
                 if len(item['num']) != 10 or item['num'][0] != '0' or item['num'][1] != '9':
                     line_bot_api.reply_message(token, TextSendMessage(text='請輸入正確格式的電話號碼'))
-                insert_user_status_query.update({'num':item['num']})
-                db.session.commit()
-                if item['name'] == "未填" or item['num'] == "未填":
-                    print('name: '+item['name'])
-                    print('num: '+item['num'])
-                    line_bot_api.reply_message(token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
-                                                    TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
                 else:
-                    line_bot_api.reply_message(token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
-                                                TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
-                option = 'no' #reset option
-                commit_user_msg(item['user_id'],option)
+                    insert_user_status_query.update({'num':item['num']})
+                    db.session.commit()
+                    if item['name'] == "未填" or item['num'] == "未填":
+                        print('name: '+item['name'])
+                        print('num: '+item['num'])
+                        line_bot_api.reply_message(token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
+                                                        TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+                    else:
+                        line_bot_api.reply_message(token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
+                                                    TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+                    option = 'no' #reset option
+                    commit_user_msg(item['user_id'],option)
             elif option == "添加地址": #add address by user message
                 option = 'no' #reset option
                 commit_user_msg(item['user_id'],option)
