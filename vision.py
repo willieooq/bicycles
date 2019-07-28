@@ -7,7 +7,13 @@ import os
 # Imports the Google Cloud client library
 from google.cloud import vision
 from google.cloud.vision import types
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'secrect_key\Bicycles-vision.json'
+gac_path = os.path.join(
+  os.path.dirname(__file__),
+  'secrect_key',
+  'Bicycles-vision.json'
+)
+print('gac: ' + gac_path)
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = gac_path
 bike_labels = [
   'bicycle', 'bicycle wheel', 'bicycle part', 'bicycle frame', 'bicycle tire', 'vehicle',
   'spoke', 'bicycle saddle', 'bicycle fork', 'bicycle drivetrain part'
