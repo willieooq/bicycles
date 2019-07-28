@@ -3,8 +3,10 @@ astroid==2.2.5
 awscli==1.16.170
 awscli-cwlogs==1.4.5
 awscli-plugin-execute-api==0.2.0
+beautifulsoup4==4.8.0
 boto3==1.9.174
 botocore==1.12.174
+cachetools==3.1.1
 certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
@@ -17,6 +19,13 @@ Flask-Migrate==2.5.2
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.0
 future==0.17.1
+google==2.0.2
+google-api-core==1.14.0
+google-auth==1.6.3
+google-cloud==0.34.0
+google-cloud-vision==0.38.1
+googleapis-common-protos==1.6.0
+grpcio==1.22.0
 gunicorn==19.9.0
 heroku==0.1.4
 idna==2.8
@@ -30,9 +39,12 @@ line-bot-sdk==1.9.0
 Mako==1.0.11
 MarkupSafe==1.1.1
 mccabe==0.6.1
+numpy==1.17.0
+protobuf==3.9.0
 psycopg2==2.8.2
 psycopg2-binary==2.8.2
 pyasn1==0.4.5
+pyasn1-modules==0.2.5
 pylint==2.3.1
 pylint-flask==0.6
 pylint-plugin-utils==0.5
@@ -44,6 +56,7 @@ requests==2.22.0
 rsa==3.4.2
 s3transfer==0.2.0
 six==1.12.0
+soupsieve==1.9.2
 SQLAlchemy==1.3.4
 static3==0.7.0
 typed-ast==1.4.0
