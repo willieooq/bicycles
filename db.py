@@ -13,20 +13,26 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 
-class bicycles(db.Model):
-    __tablename__ = 'bicycles'
-    UserId = db.Column(db.String(64), primary_key=True)
-    Name = db.Column(db.String(64))
-    Num = db.Column(db.String(64))
-    Time = db.Column(db.TIMESTAMP)
-    Address = db.Column(db.String(64))
-    Photo = db.Column(db.String(64))
-    City = db.Column(db.String(64))
-    Detail = db.Column(db.String(64))
-    Handler = db.Column(db.String(64))
-    Status = db.Column(db.String(64))
-    Score = db.Column(db.Integer)
-    Updatedate = db.Column(db.TIMESTAMP)
+class Bicycles(db.Model):
+    __tablename__ = 'Bicycles'
+    user_id = db.Column(db.String(64), primary_key=True)
+    name = db.Column(db.String(64))
+    num = db.Column(db.String(64))
+    time = db.Column(db.TIMESTAMP)
+    address = db.Column(db.String(64))
+    photo = db.Column(db.String(64))
+    city = db.Column(db.String(64))
+    detail = db.Column(db.String(64))
+    handler = db.Column(db.String(64))
+    status = db.Column(db.String(64))
+    score = db.Column(db.Integer)
+    total = db.Column(db.Integer)
+    updatedate = db.Column(db.TIMESTAMP)
+    level = db.Column(db.Integer)
+class UserMsg(db.Model):
+    __tablename__ = 'UserMsg'
+    user_id = db.Column(db.String(64), primary_key=True)
+    user_msg = db.Column(db.String(64))
     
 if __name__ == '__main__':
     manager.run()

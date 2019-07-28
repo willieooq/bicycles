@@ -1,20 +1,30 @@
 from db import *
 import datetime
 
-class bicycles(db.Model):
-    __tablename__ = 'bicycles'
+class Bicycles(db.Model):
+    __tablename__ = 'Bicycles'
 
-    def __init__(self, UserId="N/A", Name="未填", Num="未填",Time=datetime.datetime.now(),Address='N/A',Photo='N/A',City='N/A',Detail='N/A',Handler='not',Status='N/A',Score='0',Updatedate=datetime.datetime.now()):
+    def __init__(self, user_id="N/A", name="未填", num="未填",time=datetime.datetime.now(),address='N/A',photo='N/A',city='N/A',detail=' ',handler='none',status='N/A',score='0',total='0',updatedate=datetime.datetime.now(),level='0'):
         
-        self.UserId = UserId
-        self.Name = Name
-        self.Num = Num
-        self.Time = Time
-        self.Address = Address
-        self.Photo = Photo
-        self.City = City
-        self.Detail = Detail
-        self.Handler = Handler
-        self.Status = Status
-        self.Score = Score
-        self.Updatedate = Updatedate
+        self.user_id = user_id
+        self.name = name
+        self.num = num
+        self.time = time
+        self.address = address
+        self.photo = photo
+        self.city = city
+        self.detail = detail
+        self.handler = handler
+        self.status = status
+        self.score = score
+        self.total = total
+        self.updatedate = updatedate
+        self.level = level
+
+class UserMsg(db.Model):
+    __tablename__ = 'UserMsg'
+
+    def __init__(self, user_id="N/A", user_msg = 'no'):
+
+        self.user_id = user_id
+        self.user_msg = user_msg
