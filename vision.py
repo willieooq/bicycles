@@ -16,9 +16,12 @@ print('gac: ' + gac_path)
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = gac_path
 bike_labels = [
   'bicycle', 'bicycle wheel', 'bicycle part', 'bicycle frame', 'bicycle tire', 'vehicle',
-  'spoke', 'bicycle saddle', 'bicycle fork', 'bicycle drivetrain part'
+  'spoke', 'bicycle saddle', 'bicycle fork', 'bicycle drivetrain part', 'wheel'
 ]
-
+path = os.path.join(
+        os.path.dirname(__file__),
+        'resources',
+        'bike_07.jpg')
 # Instantiates a client
 client = vision.ImageAnnotatorClient()
 
@@ -61,19 +64,25 @@ def detect_labels(path):
 def get_bike_scores(labels):
   print('labels length:', len(labels))
   ret = dict()
-
+  possibility = 0
+  sum_score = 0
   for label in labels:
     description =  label.description.lower()
     print('Processing label:', description)
     if description in bike_labels:
       print('{} in'.format(description))
+      print(label.score)
       ret[description] = label.score
+      possibility = possibility+1
+      sum_score = sum_score+label.score
     else:
       print('{} not in'.format(description))
   return ret
 
 # function call here
 
-# image_labels = detect_labels(path)
-# scores = get_bike_scores(image_labels)
-# print('final score:', scores)
+image_labels = detect_labels(path)
+scores = get_bike_scores(image_labels)
+print('final score:', scores,'\n')
+
+keras_bike_predict(scores)

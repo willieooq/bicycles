@@ -4,7 +4,7 @@ import datetime
 class Bicycles(db.Model):
     __tablename__ = 'Bicycles'
 
-    def __init__(self, user_id="N/A", name="未填", num="未填",time=datetime.datetime.now(),address='N/A',photo='N/A',city='N/A',detail=' ',handler='none',status='N/A',score='0',total='0',updatedate=datetime.datetime.now(),level='0'):
+    def __init__(self, user_id="N/A", name="未填", num="未填",time=datetime.datetime.now(),address='N/A',photo='N/A',city='N/A',detail=' ',handler='none',status='not yet',score='0',total='0',updatedate=datetime.datetime.now(),level='0'):
         
         self.user_id = user_id
         self.name = name
