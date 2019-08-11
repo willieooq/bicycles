@@ -279,7 +279,7 @@ def handle_message(event):
                                                         TextSendMessage(text="太棒了，你這次舉報獲得"+str(item['score'])+"分！"),
                                                         TextSendMessage(text="以下是這次舉報的內容\n舉報聯絡人："+str(item['name'])+"\n聯絡電話："+str(item['num'])+"\n位置:"+str(item['address'])+"(註:"+str(item['detail'])+")"),
                                                         TemplateSendMessage(alt_text='address corect',template=ButtonsTemplate(text='請再次確認舉報內容是否正確，確定請點選『確認送出舉報內容』，或按下『放棄舉報』',actions=[MessageTemplateAction(label="確認送出舉報內容",text="確認送出舉報內容"),MessageTemplateAction(label="放棄舉報，回到大廳",text="回到大廳")]))])
-        elif user_msg == "添加註解" or user_msg == "重新註解":
+        elif option == '添加地址' and (user_msg == "添加註解" or user_msg == "重新註解"):
             print(user_msg)
             print('1')
             option = "添加註解"
@@ -334,8 +334,6 @@ def handle_message(event):
             elif option == "添加地址": #add address by user message
                 checking = re.compile(r'.*[縣市].*[鄉鎮市區村].*[街路].*號')
                 if checking.search(user_msg) != None:
-                    option = 'no' #reset option
-                    commit_user_msg(item['user_id'],option)
                     insert_bicycles_status.update({'address':user_msg})
                     db.session.commit()
                     line_bot_api.push_message(item['user_id'],[TextSendMessage(text = user_msg),
@@ -348,7 +346,7 @@ def handle_message(event):
                 email_reply.send_email("brokenbikeline@gmail.com","【廢棄腳踏車~重生!】民眾建議", "您好，\n這是來自報廢腳踏車~重生!聊天機器人的民眾建議喔!請轉交志工們進行討論並回應。\n\n建議者:"+str(item['name'])+"\n建議者電話:"+str(item['num'])+"\n建議內容:\n-----------\n"+user_msg+"\n-----------\n\n來自小智機器人，請勿回信")
                 line_bot_api.push_message(item['user_id'],TextSendMessage(text = "好的，我已經轉交給志工們囉!"))
                 line_bot_api.push_message(item['user_id'],TemplateSendMessage(alt_text = 'back to title',template = title_btn))
-            elif option == "添加註解":
+            elif option == "添加註解" and :
                 print('2')
                 option = 'no' #reset option
                 commit_user_msg(item['user_id'],option)
