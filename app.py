@@ -332,12 +332,16 @@ def handle_message(event):
                     option = 'no' #reset option
                     commit_user_msg(item['user_id'],option)
             elif option == "添加地址": #add address by user message
-                option = 'no' #reset option
-                commit_user_msg(item['user_id'],option)
-                insert_bicycles_status.update({'address':user_msg})
-                db.session.commit()
-                line_bot_api.reply_message(token,[TextSendMessage(text = user_msg),
-                                            TemplateSendMessage(alt_text ='address check',template = address_check)])
+                checking = re.compile(r'.*[縣市].*[鄉鎮市區村].*[街路].*號')
+                if checking.search(user_msg) != None:
+                    option = 'no' #reset option
+                    commit_user_msg(item['user_id'],option)
+                    insert_bicycles_status.update({'address':user_msg})
+                    db.session.commit()
+                    line_bot_api.push_message(item['user_id'],[TextSendMessage(text = user_msg),
+                                                    TemplateSendMessage(alt_text ='address check',template = address_check)])
+                else:
+                    line_bot_api.push_message(item['user_id'],TextSendMessage(text = '地址格式錯誤，請輸入正確的地址')) 
             elif option == "建議與回饋":
                 option = 'no' #reset option
                 commit_user_msg(item['user_id'],option)
