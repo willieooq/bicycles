@@ -37,7 +37,7 @@ levelname = ["新生", "國小低年級", "國小中年級", "國小高年級", 
 
 #change option func
 def commit_user_msg(user_id,option):
-    insert_user_msg_query = db.session.query(UserMsg).filter(UserMsg.user_id==user_id)
+    insert_user_msg_query = db.session.query(UserData).filter(UserData.user_id==user_id)
     insert_user_msg_query.update({'user_msg':option})
     db.session.commit()
 # 監聽所有來自 /callback 的 Post Request
@@ -61,8 +61,11 @@ def handle_follow(event):
     item = {'user_id' : 'user_id'}
     item['user_id'] = event.source.user_id
     try:
-        insert_user_id = Bicycles(user_id=item['user_id'])
+        insert_user_id = UserData(user_id=item['user_id'])
         db.session.add(insert_user_id)
+        db.session.commit()
+        insert_user_id_bicycles = Bicycles(user_id = item['user_id'])
+        db.session.add(insert_user_id_bicycles)
         db.session.commit()
         print(event.source.user_id)
     except:
@@ -91,10 +94,10 @@ def handle_message(event):
         'updatedate' : 'updatedate'}
     #get user id from db
     item['user_id'] = event.source.user_id
-    insert_user_msg = db.session.query(UserMsg).filter(UserMsg.user_id==item['user_id']).first()
-    insert_user_msg_query = db.session.query(UserMsg).filter(UserMsg.user_id==item['user_id'])
-    insert_user_status = db.session.query(Bicycles).filter(Bicycles.user_id==item['user_id']).first()
-    insert_user_status_query = db.session.query(Bicycles).filter(Bicycles.user_id==item['user_id'])
+    insert_user_data = db.session.query(UserData).filter(UserData.user_id==item['user_id'])
+    insert_user_data_query = db.session.query(UserData).filter(UserData.user_id==item['user_id']).first()
+    insert_bicycles_status = db.session.query(Bicycles).filter(Bicycles.user_id==item['user_id'])
+    insert_bicycles_status_query = db.session.query(Bicycles).filter(Bicycles.user_id==item['user_id']).first()
     # get reply token
     token = event.reply_token
     # 
@@ -102,23 +105,23 @@ def handle_message(event):
         os.path.dirname(__file__),
         'images',
         item['user_id']+'.jpg'
-    )
+    ) 
     # user check
-    if insert_user_status == None:
+    if insert_user_data_query  == None or insert_bicycles_status_query == None:
         line_bot_api.reply_message(token , TextSendMessage(text="未知用戶，請重新加入好友"))
     else:
         #load data from db
-        item["name"]=insert_user_status.name
-        item["num"]=insert_user_status.num
-        item['address']=insert_user_status.address
-        item['detail']=insert_user_status.detail
-        item['photo']=insert_user_status.photo
-        item['score']=insert_user_status.score
-        item['total']=insert_user_status.total
-        item['level']=insert_user_status.level
+        item["name"]=insert_user_data_query.name
+        item["num"]=insert_user_data_query.num
+        item['address']=insert_bicycles_status_query.address
+        item['detail']=insert_bicycles_status_query.detail
+        item['photo']=insert_bicycles_status_query.photo
+        item['score']=insert_user_data_query.score
+        item['total']=insert_user_data_query.total
+        item['level']=insert_user_data_query.level
     # determine where the process
     try:
-        option=insert_user_msg.user_msg
+        option=insert_user_data_query.user_msg
     except:
         option='no'
     print('try:'+option)
@@ -144,7 +147,7 @@ def handle_message(event):
                 #test message
                 print(image_url)
                 #insert db
-                insert_user_status_query.update({'photo':image_url})#upload message
+                insert_bicycles_status.update({'photo':image_url})#upload message
                 
 
                 #google vision determine
@@ -170,7 +173,7 @@ def handle_message(event):
                                                             TemplateSendMessage(alt_text='photo check',template=photo_check)])
                 #upload score
                 item['score']=ans
-                insert_user_status_query.update({'score':item['score']})
+                insert_user_data.update({'score':item['score']})
             except:
                 line_bot_api.push_message(
                     item['user_id'],
@@ -193,9 +196,9 @@ def handle_message(event):
             item['city'] = location["results"][0]["address_components"][2]["long_name"]
             #checking address
             checking = re.compile(r'.*[縣市].*[鄉鎮市區村].*[街路].*號')
-            # insert_user_status_query.update({'address':location["results"][0]['formatted_address']})
+            # insert_bicycles_status_query.update({'address':location["results"][0]['formatted_address']})
             if checking.search(item['address']) != None:
-                insert_user_status_query.update({'address':item['address'],'city':item['city']})
+                insert_bicycles_status.update({'address':item['address'],'city':item['city']})
                 db.session.commit()
                 line_bot_api.push_message(item['user_id'],[TextSendMessage(text = item['address']),
                                                 TemplateSendMessage(alt_text ='address check',template = address_check)])
@@ -210,9 +213,9 @@ def handle_message(event):
             line_bot_api.reply_message(token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
                                             TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
         elif (user_msg == "開始舉報廢棄腳踏車"):
-            if item['name'] and item['num'] == "未填":
+            if item['name'] == "未填" or item['num'] == "未填":
                 line_bot_api.reply_message(token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
-                                                TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+                                                TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn_no)])
             else:
                 line_bot_api.reply_message(token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
                                             TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
@@ -234,8 +237,7 @@ def handle_message(event):
         # jump to upload image
         elif user_msg == '上傳照片':
             option = '上傳照片'
-            insert_user_msg_query.update({'user_msg':option})
-            db.session.commit()
+            commit_user_msg(item['user_id'],option)
             line_bot_api.reply_message(token ,TextSendMessage(text="請上傳一張照片喔！"))
         #image check
         elif user_msg == '確認送出':
@@ -261,7 +263,6 @@ def handle_message(event):
         elif user_msg == "怎麼判斷是廢棄的腳踏車":
             line_bot_api.reply_message(token ,TemplateSendMessage(alt_text="怎麼判斷是廢棄的腳踏車",template=broken_btn))
         elif user_msg == "我的成績與設定":
-            print(type(str(insert_user_status.level)))
             line_bot_api.reply_message(token,TextSendMessage(text="舉報聯絡人:"+item['name']+"\n聯絡電話:"+item['num']+" \
                                                             \n成就分數："+str(item['level'])+"\n等級是["+levelname[int(str(item['level']))]+"] \
                                                             \n總共舉報了"+str(item['total'])+"筆\n已經幫助清潔隊回收了0輛\n未結案案件筆數:"+str(item['total'])+" \
@@ -298,11 +299,11 @@ def handle_message(event):
             #insert Name
             if option == "變更稱呼":
                 item['name']=user_msg
-                insert_user_status_query.update({'name':item['name']})
+                insert_user_data.update({'name':item['name']})
                 db.session.commit()
                 if item['name'] == "未填" or item['num'] == "未填":
                     line_bot_api.reply_message(token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
-                                                    TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+                                                    TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn_no)])
                 else:
                     line_bot_api.reply_message(token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
                                                 TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
@@ -318,13 +319,13 @@ def handle_message(event):
                 if len(item['num']) != 10 or item['num'][0] != '0' or item['num'][1] != '9':
                     line_bot_api.reply_message(token, TextSendMessage(text='請輸入正確格式的電話號碼'))
                 else:
-                    insert_user_status_query.update({'num':item['num']})
+                    insert_user_data.update({'num':item['num']})
                     db.session.commit()
                     if item['name'] == "未填" or item['num'] == "未填":
                         print('name: '+item['name'])
                         print('num: '+item['num'])
                         line_bot_api.reply_message(token, [TextSendMessage(text="您尚未填寫聯絡資料，依照規定，請您提供聯絡人稱呼以及聯絡電話。您只需填寫一次，小智會記住，以後就可以直接舉報囉!\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
-                                                        TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
+                                                        TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn_no)])
                     else:
                         line_bot_api.reply_message(token, [TextSendMessage(text="請拍攝想要舉報的報廢腳踏車照片上傳給我，謝謝。\n\n舉報聯絡人:"+item['name']+"\n聯絡電話:"+str(item['num'])),
                                                     TemplateSendMessage(alt_text="開始舉報廢棄腳踏車", template=str_btn)])
@@ -333,7 +334,7 @@ def handle_message(event):
             elif option == "添加地址": #add address by user message
                 option = 'no' #reset option
                 commit_user_msg(item['user_id'],option)
-                insert_user_status_query.update({'address':user_msg})
+                insert_bicycles_status.update({'address':user_msg})
                 db.session.commit()
                 line_bot_api.reply_message(token,[TextSendMessage(text = user_msg),
                                             TemplateSendMessage(alt_text ='address check',template = address_check)])
@@ -348,7 +349,7 @@ def handle_message(event):
                 option = 'no' #reset option
                 commit_user_msg(item['user_id'],option)
                 item['detail'] = user_msg
-                insert_user_status_query.update({'detail':user_msg})
+                insert_bicycles_status.update({'detail':user_msg})
                 db.session.commit()
                 line_bot_api.reply_message(token,[ImageSendMessage(original_content_url=img_good_job,preview_image_url=img_good_job),
                                                     TemplateSendMessage(alt_text='註解已添加',template=ButtonsTemplate(title='地址:'+str(item['address'])+'(註:'+str(item['detail'])+')',text='註解已添加！',

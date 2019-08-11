@@ -37,4 +37,4 @@ def keras_bike_predict(bicycle, bicycle_wheel, bicycle_part, bicycle_frame, bicy
     return y_pred[0]
 
 
-keras_bike_predict(bicycle = 0.9324832947, bicycle_wheel = 0.893472394793284, bicycle_part = 0.98766576777, bicycle_frame = 0.7823432948324, bicycle_tire = 0.9324832948, vehicle = 0.93942839497329, spoke = 0.9999999939499, bicycle_saddle = 0.9823483729, bicycle_fork = 0.8932473279847, bicycle_drivetrain_part = 0.932849732949328)
+# keras_bike_predict(bicycle = 0.9324832947, bicycle_wheel = 0.893472394793284, bicycle_part = 0.98766576777, bicycle_frame = 0.7823432948324, bicycle_tire = 0.9324832948, vehicle = 0.93942839497329, spoke = 0.9999999939499, bicycle_saddle = 0.9823483729, bicycle_fork = 0.8932473279847, bicycle_drivetrain_part = 0.932849732949328)

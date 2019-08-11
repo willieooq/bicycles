@@ -11,7 +11,7 @@ img_greet = "https://i.imgur.com/9t73ixX.jpg"
 
 #template
 #begin title
-title_btn =ButtonsTemplate(
+title_btn = ButtonsTemplate(
                             title='您好，這是【廢棄腳踏車~重生!】活動大廳，小智機器人在此為您服務', 
                             thumbnail_image_url=img_greet,
                             text='Please select',
@@ -30,13 +30,28 @@ title_btn =ButtonsTemplate(
                             text="建議與回饋")]
 						    )
 #start report
-str_btn =ButtonsTemplate(
+str_btn = ButtonsTemplate(
                             title='請選擇',
                             text='Please select',
                             actions=[
                             MessageTemplateAction(
                             label="上傳照片",
                             text="上傳照片"),
+                            MessageTemplateAction(
+                            label="變更稱呼",
+                            text="變更稱呼"),
+                            MessageTemplateAction(
+                            label="變更電話",
+                            text="變更電話"),
+                            MessageTemplateAction(
+                            label="點我回到大廳",
+                            text="回到大廳")]
+                            )
+                            #start report
+str_btn_no = ButtonsTemplate(
+                            title='請選擇',
+                            text='Please select',
+                            actions=[
                             MessageTemplateAction(
                             label="變更稱呼",
                             text="變更稱呼"),
@@ -95,7 +110,7 @@ process_btn=ButtonsTemplate(
                             )
 #name check
 name_check = ButtonsTemplate(
-                            title='請寫下讓清潔隊聯絡您的電話',
+                            title='請寫下您讓清潔隊聯絡您的稱呼(姓名)',
                             text= "如果不想變更請按下『繼續舉報』。",
                             actions=[
                             MessageTemplateAction(
@@ -135,4 +150,4 @@ photo_check = ButtonsTemplate(
         label="上傳照片",
         text="上傳照片")
     ]
-)
+    )

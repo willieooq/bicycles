@@ -4,6 +4,7 @@
 import io
 import json
 import os
+from bike_predict import *
 # Imports the Google Cloud client library
 from google.cloud import vision
 from google.cloud.vision import types
@@ -77,12 +78,27 @@ def get_bike_scores(labels):
       sum_score = sum_score+label.score
     else:
       print('{} not in'.format(description))
-  return ret
+  return possibility, sum_score
+  # return ret
 
-# function call here
+##function call here
+# scores = {
+#   'bicycle':'0',
+#   ' bicycle_wheel':'0',
+#    'bicycle_part':'0', 
+#    'bicycle_frame':'0', 
+#    'bicycle_tire':'0', 
+#    'vehicle, spoke':'0', 
+#    'bicycle_saddle':'0', 
+#    'bicycle_fork':'0', 
+#    'bicycle_drivetrain_part':'0'
+# }
 
-image_labels = detect_labels(path)
-scores = get_bike_scores(image_labels)
-print('final score:', scores,'\n')
+# image_labels = detect_labels(path)
+# scores = get_bike_scores(image_labels)
+# print('final score:', scores,'\n')
 
-keras_bike_predict(scores)
+# keras_bike_predict(float(scores['bicycle']), float(scores['bicycle_wheel']),\
+#    float(scores['bicycle_part']), float(scores['bicycle_frame']), float(scores['bicycle_tire']),\
+#    float(scores['vehicle']), float(scores['spoke']), float(scores['bicycle_saddle']), \
+#    float(scores['bicycle_fork']),float(scores[' bicycle_drivetrain_part']))

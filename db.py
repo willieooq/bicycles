@@ -12,12 +12,21 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-
-class Bicycles(db.Model):
-    __tablename__ = 'Bicycles'
+class UserData(db.Model):
+    __tablename__ = 'userdata'
     user_id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(64))
     num = db.Column(db.String(64))
+    score = db.Column(db.Integer)
+    total = db.Column(db.Integer)
+    level = db.Column(db.Integer)
+    user_msg = db.Column(db.String(64))
+    # bicycles = db.relationship("Bicycles", back_populates="userdata")
+
+class Bicycles(db.Model):
+    __tablename__ = 'bicycles'
+    ID = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(64),db.ForeignKey('userdata.user_id'))
     time = db.Column(db.TIMESTAMP)
     address = db.Column(db.String(64))
     photo = db.Column(db.String(64))
@@ -25,14 +34,12 @@ class Bicycles(db.Model):
     detail = db.Column(db.String(64))
     handler = db.Column(db.String(64))
     status = db.Column(db.String(64))
-    score = db.Column(db.Integer)
-    total = db.Column(db.Integer)
     updatedate = db.Column(db.TIMESTAMP)
-    level = db.Column(db.Integer)
-class UserMsg(db.Model):
-    __tablename__ = 'UserMsg'
-    user_id = db.Column(db.String(64), primary_key=True)
-    user_msg = db.Column(db.String(64))
-    
+    # userdata = db.relationship("UserData", back_populates="bicycles")
+
+# test = Bicycles.query.filter(Bicycles.user_id == '666').first()
+# print('city',test.city)
+# print('name',test.userdata.name)
+
 if __name__ == '__main__':
     manager.run()
