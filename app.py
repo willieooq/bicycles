@@ -346,7 +346,7 @@ def handle_message(event):
                 email_reply.send_email("brokenbikeline@gmail.com","【廢棄腳踏車~重生!】民眾建議", "您好，\n這是來自報廢腳踏車~重生!聊天機器人的民眾建議喔!請轉交志工們進行討論並回應。\n\n建議者:"+str(item['name'])+"\n建議者電話:"+str(item['num'])+"\n建議內容:\n-----------\n"+user_msg+"\n-----------\n\n來自小智機器人，請勿回信")
                 line_bot_api.push_message(item['user_id'],TextSendMessage(text = "好的，我已經轉交給志工們囉!"))
                 line_bot_api.push_message(item['user_id'],TemplateSendMessage(alt_text = 'back to title',template = title_btn))
-            elif option == "添加註解" and :
+            elif option == "添加註解" :
                 print('2')
                 option = 'no' #reset option
                 commit_user_msg(item['user_id'],option)
