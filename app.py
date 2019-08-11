@@ -252,7 +252,7 @@ def handle_message(event):
                                                                 'https://i.imgur.com/Pe1OqjG.jpg',
                                                                 preview_image_url="https://i.imgur.com/Pe1OqjG.jpg"),
                                                 TextSendMessage(text="【廢棄腳踏車~重生!】是由一群小學生在2016年發起的公益活動，目的是要發動大家幫忙舉報路邊的廢棄腳踏車，讓清潔隊員可以回收再利用.\n這個活動先後獲得【國語日報】、【大愛電視】、【漢聲廣播電台】等媒體專題報導，並曾經獲得【捷安特】、【日立】、【伊藤園茶飲】、【巨匠電腦】、【佛蒙特咖哩】...等企業贊助。\n更榮獲2017年信義房屋社區一家楷模獎肯定，是最適合親子一起做的公益活動，可以讓孩子透過自己的作為改變社區環境，不但社區變美變安全、還能幫助資源回收、清理出更多空間，最重要的是讓孩子和父母一起體驗: 改變世界就由我開始! "),
-                                                TemplateSendMessage(alt_text="活動說明", template=act_btn)])
+                                                TemplateSendMessage(alt_text="活動說明", template=process_btn)])
         #recycle process
         elif user_msg == "廢棄腳踏車處理流程":
             line_bot_api.reply_message(token ,[ImageSendMessage(original_content_url="https://i.imgur.com/6OyTIyr.gif",
@@ -272,16 +272,28 @@ def handle_message(event):
             commit_user_msg(item['user_id'],option)
             line_bot_api.reply_message(token,TextSendMessage(text="我們很重視您的建議，請您把建議寫下來給我們。\n\n如果不想寫請按【回到活動大廳】按鈕。")) 
         elif user_msg == "地址正確": 
+            option = 'no'
+            commit_user_msg(item['user_id'],option)
             line_bot_api.reply_message(token,TextSendMessage(text="謝謝！小智用AI幫你審查整個案子，請稍候...")) 
             #add judge
-
-            line_bot_api.push_message(item['user_id'],[ImageSendMessage(original_content_url=img_good_job,preview_image_url=img_good_job),
-                                                        TextSendMessage(text="太棒了，你這次舉報獲得"+str(item['score'])+"分！"),
-                                                        TextSendMessage(text="以下是這次舉報的內容\n舉報聯絡人："+str(item['name'])+"\n聯絡電話："+str(item['num'])+"\n位置:"+str(item['address'])+"(註:"+str(item['detail'])+")"),
-                                                        TemplateSendMessage(alt_text='address corect',template=ButtonsTemplate(text='請再次確認舉報內容是否正確，確定請點選『確認送出舉報內容』，或按下『放棄舉報』',actions=[MessageTemplateAction(label="確認送出舉報內容",text="確認送出舉報內容"),MessageTemplateAction(label="放棄舉報，回到大廳",text="回到大廳")]))])
+            report_btn = ButtonsTemplate(text='請再次確認舉報內容是否正確，確定請點選『確認送出舉報內容』，或按下『放棄舉報』',
+                                        actions=[MessageTemplateAction(
+                                                label="確認送出舉報內容",
+                                                text="確認送出舉報內容"),
+                                                MessageTemplateAction(
+                                                label="放棄舉報，回到大廳",
+                                                text="回到大廳")])
+            if item['score'] >= 6:
+                line_bot_api.push_message(item['user_id'],[ImageSendMessage(original_content_url=img_good_job,preview_image_url=img_good_job),
+                                                            TextSendMessage(text="太棒了，你這次舉報獲得"+str(item['score'])+"分！"),
+                                                            TextSendMessage(text="以下是這次舉報的內容\n舉報聯絡人："+str(item['name'])+"\n聯絡電話："+str(item['num'])+"\n位置:"+str(item['address'])+"(註:"+str(item['detail'])+")"),
+                                                            TemplateSendMessage(alt_text='address corect',template=report_btn)])
+            else :
+                line_bot_api.push_message(item['user_id'],[ImageSendMessage(original_content_url=img_cry,preview_image_url=img_cry),
+                                                            TextSendMessage(text="真可惜，你這次舉報只獲得"+str(item['score'])+"分！"),
+                                                            TextSendMessage(text="以下是這次舉報的內容\n舉報聯絡人："+str(item['name'])+"\n聯絡電話："+str(item['num'])+"\n位置:"+str(item['address'])+"(註:"+str(item['detail'])+")"),
+                                                            TemplateSendMessage(alt_text='address corect',template=report_btn)])
         elif option == '添加地址' and (user_msg == "添加註解" or user_msg == "重新註解"):
-            print(user_msg)
-            print('1')
             option = "添加註解"
             commit_user_msg(item['user_id'],option)
             line_bot_api.reply_message(token,TemplateSendMessage(alt_text='add ps',

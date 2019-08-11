@@ -59,24 +59,9 @@ str_btn_no = ButtonsTemplate(
                             label="變更電話",
                             text="變更電話"),
                             MessageTemplateAction(
-                            label="點我回到大廳",
+                            label="回到大廳",
                             text="回到大廳")]
                             )
-#Event Description
-act_btn=ButtonsTemplate(
-                            title='請選擇',
-                            text='Please select',
-                            actions=[
-                            MessageTemplateAction(
-                            label="怎麼判斷是廢棄的腳踏車",
-                            text="怎麼判斷是廢棄的腳踏車",),
-                            MessageTemplateAction(
-                            label="廢棄腳踏車處理流程",
-                            text="廢棄腳踏車處理流程",),
-                            MessageTemplateAction(
-                            label="建議與回饋",
-                            text="建議與回饋")]
-			    )
 #how to decide
 broken_btn=ButtonsTemplate(
                             thumbnail_image_url="https://i.imgur.com/hdwQlWk.jpg",
@@ -91,7 +76,10 @@ broken_btn=ButtonsTemplate(
                             text="廢棄腳踏車處理流程",),
                             MessageTemplateAction(
                             label="建議與回饋",
-                            text="建議與回饋")]
+                            text="建議與回饋"),
+                            MessageTemplateAction(
+                            label="回到大廳",
+                            text="回到大廳")]
 			    )
 #recycle process            
 process_btn=ButtonsTemplate(
@@ -106,7 +94,10 @@ process_btn=ButtonsTemplate(
                             text="廢棄腳踏車處理流程",),
                             MessageTemplateAction(
                             label="建議與回饋",
-                            text="建議與回饋")]
+                            text="建議與回饋"),
+                            MessageTemplateAction(
+                            label="回到大廳",
+                            text="回到大廳")]
                             )
 #name check
 name_check = ButtonsTemplate(
