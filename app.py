@@ -293,14 +293,20 @@ def handle_message(event):
                                                             TextSendMessage(text="真可惜，你這次舉報只獲得"+str(item['score'])+"分！"),
                                                             TextSendMessage(text="以下是這次舉報的內容\n舉報聯絡人："+str(item['name'])+"\n聯絡電話："+str(item['num'])+"\n位置:"+str(item['address'])+"(註:"+str(item['detail'])+")"),
                                                             TemplateSendMessage(alt_text='address corect',template=report_btn)])
-        elif option == '添加地址' and (user_msg == "添加註解" or user_msg == "重新註解"):
-            option = "添加註解"
-            commit_user_msg(item['user_id'],option)
-            line_bot_api.reply_message(token,TemplateSendMessage(alt_text='add ps',
-                                    template= ButtonsTemplate(
-                                    title = '地址:'+str(item['address']),
-                                    text="請直接輸入您要提供的註解。\n如果地址不用說明，可以直接按【地址正確】按鈕確認地址。",
-                                    actions=[MessageTemplateAction(label="地址正確",text="地址正確")])))
+        elif user_msg == "添加註解" or user_msg == "重新註解":
+            if option == '添加地址' :
+                option = "添加註解"
+                commit_user_msg(item['user_id'],option)
+                line_bot_api.reply_message(token,TemplateSendMessage(alt_text='add ps',
+                                        template= ButtonsTemplate(
+                                        title = '地址:'+str(item['address']),
+                                        text="請直接輸入您要提供的註解。\n如果地址不用說明，可以直接按【地址正確】按鈕確認地址。",
+                                        actions=[MessageTemplateAction(label="地址正確",text="地址正確")])))
+            #unknown message
+            else:
+                line_bot_api.reply_message(token , [ImageSendMessage(original_content_url=img_sorry,preview_image_url=img_sorry),
+                                                    TextSendMessage(text='抱歉，您傳了一個我看不懂的指令'),
+                                                    TemplateSendMessage(alt_text='sorry',template=title_btn)])
         elif user_msg == "確認送出舉報內容":
             line_bot_api.push_message(item['user_id'],TextSendMessage(text = "好的，我會將這個案件交給清潔隊，大約一週內就會有隊員來勘查，如果符合標準就會再以Line通知！現在帶你回活動大廳"))
             email_reply.send_email("brokenbikeline@gmail.com","【廢棄腳踏車~重生!】民眾舉報案件", "敬啟者，您好\n\n這是來自報廢腳踏車~重生!活動的民眾舉報案件，這已經過我們人工智慧篩選過，應該是正確的舉報，敬請安排清潔隊員前往勘查並處理，以下是舉報的資訊 \
